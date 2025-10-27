@@ -1,5 +1,5 @@
 # Site settings
-title: Genefy's
+title: Troyeagle's
 subtitle: 这个人很勤快，他还是什么都没留下
 SEOTitle: troyeagle的博客 | Troyeagle's Blog
 header-img: img/home-bg.jpg
@@ -63,7 +63,7 @@ kramdown:
 ba_track_id: 4cc1f2d8f3067386cc5cdb626a202900
 # Google Analytics
 ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-ga_domain: genefy.top
+ga_domain: Troyeagle.top
 
 
 
