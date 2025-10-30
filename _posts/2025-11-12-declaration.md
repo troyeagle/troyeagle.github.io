@@ -2,7 +2,7 @@
 layout:     post
 title:      "组织者宣言"
 subtitle:   "为什么剧本杀要控制好时间"
-date:       2025-11-12
+date:       2025-10-20
 author:     "Troyeagle"
 header-img: "img/tag-bg.jpg"
 tags:
