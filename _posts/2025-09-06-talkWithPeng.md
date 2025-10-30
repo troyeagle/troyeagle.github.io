@@ -2,7 +2,7 @@
 layout:     post
 title:      "对话P指"
 subtitle:   "关于某合唱团运营和成长的思考"
-date:       2025-
+date:       2025-09-06
 author:     "Troyeagle"
 header-img: "img/tag-bg.jpg"
 tags:
