@@ -1,0 +1,66 @@
+_posts/2026-04-18-talkWithPeng-4.md
+  s_62b52dd9122c05::t_6892861714232f 1-108 gitai:{"mixed_line_ranges":[],"operations":[{"operation_id":"6a420c227bf3f7ae4cd1a650","tool_type":"agent","tool_id":"apply_patch","line_ranges":[{"Range":[1,108]}]}]}
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "c8d53053a69296dadb06b910c8d559e3e22cc79b",
+  "prompts": {},
+  "sessions": {
+    "s_62b52dd9122c05": {
+      "agent_id": {
+        "tool": "trae",
+        "id": "68ff38ea6f8b6cfb57a6d1b3",
+        "model": "gpt-5.4__dev"
+      },
+      "human_author": "troy <troyeagledzh@gmail.com>"
+    }
+  },
+  "attestation_metadata": {
+    "_posts/2026-04-18-talkWithPeng-4.md": [
+      {
+        "hash": "s_62b52dd9122c05::t_6892861714232f",
+        "line_ranges": [
+          {
+            "Range": [
+              1,
+              108
+            ]
+          }
+        ],
+        "mixed_line_ranges": [],
+        "operations": [
+          {
+            "operation_id": "6a420c227bf3f7ae4cd1a650",
+            "tool_type": "agent",
+            "tool_id": "apply_patch",
+            "line_ranges": [
+              {
+                "Range": [
+                  1,
+                  108
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "remote_transcripts": {
+    "s_62b52dd9122c05": {
+      "tool": "trae",
+      "conversation_id": "68ff38ea6f8b6cfb57a6d1b3",
+      "session_id": "68ff38ea6f8b6cfb57a6d1b3",
+      "status": "remote_only",
+      "message": "Remote transcript resolution is not implemented yet for TRAE prompts."
+    },
+    "s_62b52dd9122c05::t_6892861714232f": {
+      "tool": "trae",
+      "conversation_id": "68ff38ea6f8b6cfb57a6d1b3",
+      "session_id": "68ff38ea6f8b6cfb57a6d1b3",
+      "status": "remote_only",
+      "message": "Remote transcript resolution is not implemented yet for TRAE prompts."
+    }
+  }
+}
