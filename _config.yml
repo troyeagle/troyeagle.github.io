@@ -99,3 +99,9 @@ friends: [
         href: "#"
     }
 ]
+
+defaults:
+  - scope:
+      path: "talkWithPeng-文章生成模板.md"
+    values:
+      nav_exclude: true
