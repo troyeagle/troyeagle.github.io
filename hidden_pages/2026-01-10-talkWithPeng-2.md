@@ -3,8 +3,10 @@ layout:     post
 title:      "对话P指（二）"
 subtitle:   "从音乐产品、AI工具到排练协作"
 date:       2026-01-10
+permalink:  /2026/01/10/talkWithPeng-2/
 author:     "Troyeagle"
 header-img: "img/tag-bg.jpg"
+nav_exclude: true
 tags:
     - 合唱
     - 产品
