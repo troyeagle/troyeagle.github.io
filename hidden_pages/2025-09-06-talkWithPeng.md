@@ -3,8 +3,10 @@ layout:     post
 title:      "对话P指"
 subtitle:   "关于某合唱团运营和成长的思考"
 date:       2025-09-06
+permalink:  /2025/09/06/talkWithPeng/
 author:     "Troyeagle"
 header-img: "img/tag-bg.jpg"
+nav_exclude: true
 tags:
     - 合唱
     - 音乐管理
@@ -144,4 +146,3 @@ tags:
 
 ## 来源
 这一天的排练大约拖到了 9:40，理由是分声部排练告一段落，下周要学新曲子了，这周做了一个总结，对于团员们反馈的普遍问题做了一些回应。其中有关于声乐课的部分。结束之后 P 指和我一道回去，以上就是我和 P 指在回去的过程当中，对于现状的一些思考。
-

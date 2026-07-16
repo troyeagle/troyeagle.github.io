@@ -3,8 +3,10 @@ layout:     post
 title:      "对话P指（三）"
 subtitle:   "关于排练效率、招新与团体成长的复盘"
 date:       2026-03-28
+permalink:  /2026/03/28/talkWithPeng-3/
 author:     "Troyeagle"
 header-img: "img/tag-bg.jpg"
+nav_exclude: true
 tags:
     - 合唱
     - 团队管理

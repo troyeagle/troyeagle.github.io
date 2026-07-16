@@ -3,8 +3,10 @@ layout:     post
 title:      "对话P指（一）"
 subtitle:   "关于排练责任、运营支持与改谱机制的讨论"
 date:       2025-12-27
+permalink:  /2025/12/27/talkWithPeng-1/
 author:     "Troyeagle"
 header-img: "img/tag-bg.jpg"
+nav_exclude: true
 tags:
     - 合唱
     - 团队管理

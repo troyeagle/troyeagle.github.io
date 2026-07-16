@@ -3,8 +3,10 @@ layout:     post
 title:      "对话P指（四）"
 subtitle:   "从合唱作品、版权生态到排练中的有效指令"
 date:       2026-04-18
+permalink:  /2026/04/18/talkWithPeng-4/
 author:     "Troyeagle"
 header-img: "img/tag-bg.jpg"
+nav_exclude: true
 tags:
     - 合唱
     - 版权
