@@ -1,6 +1,8 @@
 # talkWithPeng 文章生成模板
 
-适用范围：基于 `../audio-pb/` 下的录音整理材料，生成 `_posts/` 下的 `talkWithPeng` 系列文章。
+适用范围：基于 `../audio-pb/` 下的录音整理材料，生成博客中的 `talkWithPeng` 系列文章。
+
+当前发布方式：文章文件放在 `hidden_pages/` 下，通过固定 `permalink` 保持原访问链接，但不出现在首页文章列表和右上角导航中。
 
 ---
 
@@ -11,12 +13,21 @@
 1. 对应日期目录下的 `5-最终输出/交付稿.md`
 2. 对应日期目录下的 `2-要求和信息/工作要求.txt`
 3. 对应日期目录下的 `4-分段主题.md`
-4. `../audio-pb/0-共同要求和背景知识.md`
-5. 已发布的历史文章：
-   - `_posts/2025-09-06-talkWithPeng.md`
-   - `_posts/2025-12-27-talkWithPeng-1.md`
-   - `_posts/2026-01-10-talkWithPeng-2.md`
-   - `_posts/2026-03-28-talkWithPeng-3.md`
+4. 对应日期目录下的 `3-校对和术语表.md`，如果存在
+5. 对应日期目录下的 `0-工作日志.md`，如果存在
+6. `../audio-pb/0-共同要求和背景知识.md`
+7. 已发布的历史文章：
+   - `hidden_pages/2025-09-06-talkWithPeng.md`
+   - `hidden_pages/2025-12-27-talkWithPeng-1.md`
+   - `hidden_pages/2026-01-10-talkWithPeng-2.md`
+   - `hidden_pages/2026-03-28-talkWithPeng-3.md`
+   - `hidden_pages/2026-04-18-talkWithPeng-4.md`
+   - `hidden_pages/2026-04-25-talkWithPeng-5.md`
+   - `hidden_pages/2026-05-16-talkWithPeng-6.md`
+   - `hidden_pages/2026-05-30-talkWithPeng-7.md`
+   - `hidden_pages/2026-06-27-talkWithPeng-8.md`
+   - `hidden_pages/2026-07-25-talkWithPeng-9.md`
+   - `hidden_pages/2026-08-01-talkWithPeng-10.md`
 
 ---
 
@@ -40,7 +51,8 @@
 - 原文不清楚的地方，不自行编造细节。
 - 如果某个事实在整理稿中仍然存疑，文章中宁可绕开，不强行写实。
 - 不把整理阶段的 `(...)`、`{‼️ ...}` 直接带入正式文章。
-- 对 `talkWithPeng-2`、`talkWithPeng-3` 这类识别质量不稳定、且未经过充分粗校对的材料，如果出现上下文不通顺、同时又无法做出可靠推断的地方，应明确留给用户定夺，不要自行补齐逻辑。
+- 对识别质量不稳定、且未经过充分粗校对的材料，如果出现上下文不通顺、同时又无法做出可靠推断的地方，应明确留给用户定夺，不要自行补齐逻辑。
+- 写作前先列出一份内部判断：哪些内容可以稳定写入正文，哪些内容只能绕开，哪些内容必须交给用户确认。
 
 ### 4. 尽量顺着原始对话流来写
 
@@ -56,6 +68,7 @@
 - 要保留足够的信息量、说话口气和当时的语境，不要只剩结论。
 - 避免把正文写成会议纪要或论文摘要。
 - 不要在正文中插入“聊到这里，我们顺着说起……”“后来我们又聊到……”这类归纳式过渡句，除非原始对话里本来就有类似表达。
+- 小节标题可以承担整理功能，但正文内部不要用作者事后总结的口吻替代原本的对话推进。
 
 ### 6. 开头先交代“这篇在谈什么”
 
@@ -118,12 +131,15 @@
 
 1. 先通读 `交付稿.md`，判断这次对谈真正的核心议题。
 2. 再看 `分段主题.md`，确认哪些话题只是岔开，哪些是主线。
-3. 从历史文章里找最接近的一篇，沿用其结构密度和语气。
-4. 提炼出 `4-6` 个小节标题。
-5. 写两段引言，先定义“这篇文章在回答什么问题”。
-6. 基本按原始对话顺序整理正文，只做最小幅度的去重、清噪和段落合并。
-7. 最后补 `## 来源`，把场景和全文母题收回去。
-8. 若是 `talkWithPeng-2` 或 `talkWithPeng-3`，遇到无法可靠推断的上下文断裂，要记录并交由用户定夺，不要擅自补写。
+3. 再看 `工作日志.md` 和 `校对和术语表.md`，确认哪些内容已经校准，哪些内容只是 ASR 或粗整理结果。
+4. 从历史文章里找最接近的一篇，沿用其结构密度和语气。
+5. 提炼出 `4-6` 个小节标题。
+6. 写两段引言，先定义“这篇文章在回答什么问题”。
+7. 基本按原始对话顺序整理正文，只做最小幅度的去重、清噪和段落合并。
+8. 最后补 `## 来源`，把场景和全文母题收回去。
+9. 遇到无法可靠推断的上下文断裂，要记录并交由用户定夺，不要擅自补写。
+10. 生成后检查是否仍然保留原始对话流，是否误用了归纳式过渡句，是否把不确定内容写成了确定事实。
+11. 确认输出文件位于 `hidden_pages/`，front matter 中包含 `permalink` 和 `nav_exclude: true`。
 
 ---
 
@@ -135,8 +151,10 @@ layout:     post
 title:      "对话P指（X）"
 subtitle:   "这里填写这次对谈的核心议题"
 date:       YYYY-MM-DD
+permalink:  /YYYY/MM/DD/talkWithPeng-X/
 author:     "Troyeagle"
 header-img: "img/tag-bg.jpg"
+nav_exclude: true
 tags:
     - 合唱
     - 这里填主题标签1
@@ -191,23 +209,33 @@ tags:
 ## 七、可直接复用的提示词
 
 ```text
-请基于 ../audio-pb/<日期>/5-最终输出/交付稿.md 生成一篇可发布到 Jekyll 博客 _posts/ 下的 talkWithPeng 系列文章。
+请基于 ../audio-pb/<日期>/5-最终输出/交付稿.md 生成一篇可发布到 Jekyll 博客 hidden_pages/ 下的 talkWithPeng 系列文章。
 
 要求：
 1. 参考历史文章：
-   - _posts/2025-09-06-talkWithPeng.md
-   - _posts/2025-12-27-talkWithPeng-1.md
-   - _posts/2026-01-10-talkWithPeng-2.md
-   - _posts/2026-03-28-talkWithPeng-3.md
+   - hidden_pages/2025-09-06-talkWithPeng.md
+   - hidden_pages/2025-12-27-talkWithPeng-1.md
+   - hidden_pages/2026-01-10-talkWithPeng-2.md
+   - hidden_pages/2026-03-28-talkWithPeng-3.md
+   - hidden_pages/2026-04-18-talkWithPeng-4.md
+   - hidden_pages/2026-04-25-talkWithPeng-5.md
+   - hidden_pages/2026-05-16-talkWithPeng-6.md
+   - hidden_pages/2026-05-30-talkWithPeng-7.md
+   - hidden_pages/2026-06-27-talkWithPeng-8.md
+   - hidden_pages/2026-07-25-talkWithPeng-9.md
+   - hidden_pages/2026-08-01-talkWithPeng-10.md
 2. 同时读取：
    - ../audio-pb/0-共同要求和背景知识.md
    - ../audio-pb/<日期>/2-要求和信息/工作要求.txt
+   - ../audio-pb/<日期>/3-校对和术语表.md（如果存在）
    - ../audio-pb/<日期>/4-分段主题.md
-3. 不写成逐字稿，但正文尽量保持原始对话顺序，只做最小幅度调整。
-4. 可以去重，去掉无用语气词、噪声、重复确认和局部赘余，但不要过度压缩；要保留足够的信息量和对话语境。
-5. 不要在正文里人为加入“聊到这里”“后来我们又聊到”这类归纳式过渡句，除非原文本来就有。
-6. 不编造原文没有的事实；不确定内容宁可绕开。
-7. 如果是 `talkWithPeng-2` 或 `talkWithPeng-3`，遇到上下文不通顺且无法可靠推断的地方，不要硬写，应明确交由用户定夺。
-8. 开头写两段引言，结尾保留“来源”小节。
-9. 输出完整 Markdown，包含 Jekyll front matter。
+   - ../audio-pb/<日期>/0-工作日志.md（如果存在）
+3. 先判断哪些内容可以稳定写入正文，哪些内容存疑需要绕开或交给用户确认。
+4. 不写成逐字稿，但正文尽量保持原始对话顺序，只做最小幅度调整。
+5. 可以去重，去掉无用语气词、噪声、重复确认和局部赘余，但不要过度压缩；要保留足够的信息量和对话语境。
+6. 不要在正文里人为加入“聊到这里”“后来我们又聊到”这类归纳式过渡句，除非原文本来就有。
+7. 不编造原文没有的事实；不确定内容宁可绕开。
+8. 遇到上下文不通顺且无法可靠推断的地方，不要硬写，应明确交由用户定夺。
+9. 开头写两段引言，结尾保留“来源”小节。
+10. 输出完整 Markdown，包含 Jekyll front matter；文件放在 hidden_pages/，并设置 permalink 与 nav_exclude: true。
 ```
