@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="use-iframe" content="true">
+  <meta name="html-box-height-mode" content="auto">
+  <meta name="description" content="FictionJunction 与 Kalafina 核心发行配器出现率对比，可切换百分比与发行数并导出 SVG 或 PNG。">
+  <title>核心发行配器出现率对比</title>
+  <style>
+    :root{--bg:#fff;--fg:#172033;--muted:#687386;--grid:#dce1e8;--fj:#2f6fed;--kal:#a54a7b;--soft:#f5f7fa}
+    @media(prefers-color-scheme:dark){:root{--bg:#17191f;--fg:#f3f5f8;--muted:#aeb7c5;--grid:#414755;--fj:#78a3ff;--kal:#e18bb9;--soft:#23262e}}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif}
+    .wrap{width:100%;max-width:100%;padding:16px}.top{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px}
+    h1{font-size:20px;font-weight:600;margin:0 0 5px}.sub{font-size:13px;color:var(--muted)}.controls{display:flex;gap:8px;flex-wrap:wrap}
+    button{border:1px solid var(--grid);background:var(--soft);color:var(--fg);border-radius:7px;padding:7px 10px;font-size:13px;cursor:pointer}
+    button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}svg{width:100%;height:auto;display:block}.legend{display:flex;gap:18px;font-size:13px;color:var(--muted);margin:4px 0 8px}
+    .dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}.note{font-size:12px;color:var(--muted);margin-top:8px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div><h1>核心发行配器出现率</h1><div class="sub">统计口径：FictionJunction 10 个、Kalafina 28 个核心发行；不含精选与现场重复录音</div></div>
+    <div class="controls"><button id="pct" aria-pressed="true">百分比</button><button id="cnt" aria-pressed="false">发行数</button><button id="svgBtn">导出 SVG</button><button id="pngBtn">导出 PNG</button></div>
+  </div>
+  <div class="legend"><span><i class="dot" style="background:var(--fj)"></i>FictionJunction</span><span><i class="dot" style="background:var(--kal)"></i>Kalafina</span></div>
+  <svg id="chart" viewBox="0 0 800 590" role="img" aria-label="FictionJunction 与 Kalafina 十一类配器出现率的横向条形图"></svg>
+  <div class="note">“VGMdb 未列”不等于实际不存在；Programming 为页面明确列出的发行数。</div>
+</div>
+<script>
+const data=[
+ ['吉他',9,10,26,28],['贝斯',8,10,24,28],['鼓',8,10,25,28],['弦乐／独奏弦乐',7,10,27,28],['钢琴',5,10,14,28],['长笛',3,10,12,28],['独立打击乐',3,10,9,28],['手风琴',2,10,3,28],['铜管／萨克斯',2,10,1,28],['二胡',1,10,0,28],['Programming',9,10,23,28]
+];
+let mode='pct'; const svg=document.getElementById('chart');
+function el(n,a={},t=''){const x=document.createElementNS('http://www.w3.org/2000/svg',n);Object.entries(a).forEach(([k,v])=>x.setAttribute(k,v));if(t)x.textContent=t;return x}
+function draw(){svg.innerHTML='';const W=800,left=175,right=70,top=35,row=47,max=mode==='pct'?100:28,plot=W-left-right;
+ const style=el('style',{},`text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;fill:var(--fg)}.muted{fill:var(--muted)}.grid{stroke:var(--grid);stroke-width:1}.fj{fill:var(--fj)}.kal{fill:var(--kal)}`);svg.append(style);
+ [0,.25,.5,.75,1].forEach(q=>{const x=left+plot*q;svg.append(el('line',{x1:x,y1:20,x2:x,y2:560,class:'grid'}));svg.append(el('text',{x,y:15,'text-anchor':'middle','font-size':11,class:'muted'},mode==='pct'?Math.round(max*q)+'%':Math.round(max*q)));});
+ data.forEach((d,i)=>{const y=top+i*row, fv=mode==='pct'?d[1]/d[2]*100:d[1],kv=mode==='pct'?d[3]/d[4]*100:d[3];svg.append(el('text',{x:left-12,y:y+18,'text-anchor':'end','font-size':13},d[0]));
+  svg.append(el('rect',{x:left,y:y+2,width:plot*fv/max,height:14,rx:3,class:'fj'}));svg.append(el('rect',{x:left,y:y+21,width:plot*kv/max,height:14,rx:3,class:'kal'}));
+  svg.append(el('text',{x:left+plot*fv/max+7,y:y+14,'font-size':11},mode==='pct'?Math.round(fv)+'%':`${d[1]}/${d[2]}`));svg.append(el('text',{x:left+plot*kv/max+7,y:y+33,'font-size':11},mode==='pct'?Math.round(kv)+'%':`${d[3]}/${d[4]}`));});
+}
+function downloadSvg(){const c=svg.cloneNode(true);const css=getComputedStyle(document.documentElement);c.style.background=css.getPropertyValue('--bg');const blob=new Blob([new XMLSerializer().serializeToString(c)],{type:'image/svg+xml'});save(blob,'fj-kalafina-instrumentation.svg')}
+function downloadPng(){const c=svg.cloneNode(true),css=getComputedStyle(document.documentElement);c.style.background=css.getPropertyValue('--bg');const blob=new Blob([new XMLSerializer().serializeToString(c)],{type:'image/svg+xml'}),u=URL.createObjectURL(blob),img=new Image();img.onload=()=>{const cv=document.createElement('canvas');cv.width=1600;cv.height=1180;const g=cv.getContext('2d');g.fillStyle=css.getPropertyValue('--bg');g.fillRect(0,0,cv.width,cv.height);g.drawImage(img,0,0,cv.width,cv.height);cv.toBlob(b=>save(b,'fj-kalafina-instrumentation.png'));URL.revokeObjectURL(u)};img.src=u}
+function save(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+document.getElementById('pct').onclick=()=>{mode='pct';pct.setAttribute('aria-pressed','true');cnt.setAttribute('aria-pressed','false');draw()};document.getElementById('cnt').onclick=()=>{mode='count';pct.setAttribute('aria-pressed','false');cnt.setAttribute('aria-pressed','true');draw()};svgBtn.onclick=downloadSvg;pngBtn.onclick=downloadPng;draw();
+</script>
+</body></html>
