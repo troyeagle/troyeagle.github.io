@@ -163,6 +163,83 @@ Kalafina 早期更接近先在录音室设计高密度声部，再学习如何�
 
 > 建立世界 → 扩展复调和器乐密度 → 剥离外部层次，检验三声结构本身
 
+## 《30th Anniversary Early BEST Collection for Soundtrack》曲目溯源
+
+《30th Anniversary Early BEST Collection for Soundtrack / 梶浦由記》于 2023 年 12 月 6 日发行，编号 VTCL-60584～6，规格为 3CD，共 71 曲。FlyingDog 官方页面逐曲注明了选自哪张原始专辑；以下按“首次收入正式唱片”的年份整理。[^15][^16]
+
+- 71 曲全部在 2023 年以前正式发行，没有为 Early BEST 新写或首次发表的曲目。
+- 全部关联具体动画、OVA、游戏或音声企划；唯一不是影视／游戏的组别，是图画书《The Velveteen Rabbit》的朗读音声作品。
+- 时间范围是 2001—2009 年，但没有选入 2003、2008 年首次发行的曲目。
+
+### 首发年份分布
+
+| 最早发行年份 | 曲目数 |
+| --- | ---: |
+| 2001 | 11 |
+| 2002 | 12 |
+| 2004 | 15 |
+| 2005 | 15 |
+| 2006 | 9 |
+| 2007 | 4 |
+| 2009 | 5 |
+| **合计** | **71** |
+
+### Disc 1：2001—2002
+
+| 曲序与歌曲 | 最早发行与原始专辑 | 关联作品 | 说明 |
+| --- | --- | --- | --- |
+| 1–4、6、8<br>canta per me；snow；lullaby；salva nos；romance；chloe | 2001<br>《NOIR ORIGINAL SOUNDTRACK I》 | 电视动画《NOIR》 | 2001-06-21 发行 |
+| 5、7、9–11<br>le grand retour；secret game；colosseum；maze；a farewell song | 2001<br>《NOIR ORIGINAL SOUNDTRACK II》 | 电视动画《NOIR》 | 2001-10-03 发行 |
+| 12<br>SOUND DECLARATION of AQUARIAN AGE | 2002<br>最早收入《SPHERE.1 Influential ARAYASHIKI》等 SPHERE 系列唱片 | 电视动画《Aquarian Age: Sign for Evolution》 | SPHERE.1、2、3 于 2002-01-23 同日发行；该曲为 SPHERE 1–5 共用项目曲 |
+| 13–14<br>KYOTA；DARKLORE | 2002<br>《Aquarian Age: Sign for Evolution ORIGINAL SOUNDTRACK》 | 同上 | 2002-02-21 发行 |
+| 15–17、19<br>the world；aura；b.t.；a stray child | 2002<br>《.hack//SIGN ORIGINAL SOUND & SONG TRACK 1》 | 电视动画《.hack//SIGN》 | 2002-07-24 发行 |
+| 18、20<br>bear；in the land of twilight, under the moon | 2002<br>《.hack//SIGN ORIGINAL SOUND & SONG TRACK 2》 | 同上 | 2002-09-21 发行 |
+| 21–23<br>sweet memories；liminality#full version；grandpa's violin | 2002<br>《.hack//Liminality ORIGINAL SOUNDTRACK》 | OVA《.hack//Liminality》 | 2002-09-21 发行 |
+
+### Disc 2：2004—2006
+
+| 曲序与歌曲 | 最早发行与原始专辑 | 关联作品 | 说明 |
+| --- | --- | --- | --- |
+| 1–3<br>in the beginning, there was....；fatal fight (Jin & Margulis)；lamentation | 2004<br>《Xenosaga II MOVIE SCENE SOUNDTRACK》 | PS2 游戏《Xenosaga Episode II: Jenseits von Gut und Böse》 | 2004-07-07 发行；主要收录梶浦负责的剧情动画音乐 |
+| 4–10<br>hepatica (Kos-Mos)；we've got to believe in something；she's coming back；battleland；godsibb；testament；the battle of your soul | 2006<br>《Xenosaga III: Also Sprach Zarathustra ORIGINAL SOUND BEST TRACKS — Yuki Kajiura Selection》 | PS2 游戏《Xenosaga Episode III: Also sprach Zarathustra》 | 第三部游戏录音，不是 2004 年《Xenosaga II》的续盘 |
+| 11–12<br>Margalet；Elenore | 2004<br>《MADLAX O.S.T.》 | 电视动画《MADLAX》 | 2004-07-21 发行 |
+| 13–15<br>Madlax；we're gonna groove；we are one | 2004<br>《MADLAX O.S.T.2》 | 同上 | 2004-09-22 发行 |
+| 16–17<br>小さな祈り；ほんとうのもの～森の中へ | 2004<br>《Fantasy Sound & Reading: The Velveteen Rabbit／ビロードうさぎ》 | 图画书《The Velveteen Rabbit》的日语朗读／音声剧企划 | 2004-12-16 发行；不是影视／游戏 tie，但仍是具体文学改编音声作品的配乐 |
+| 18–22<br>媛星；今日の始まり；鴇色の舞；デュラン召還；目覚め | 2004<br>《TV ANIMATION 舞-HiME ORIGINAL SOUNDTRACK Vol.1 姫》 | 电视动画《舞-HiME》 | 2004-12-22 发行 |
+| 23–24<br>希望の都、ヴィントブルーム；MATERIALISE | 2005<br>《舞-乙HiME ORIGINAL SOUNDTRACK Vol.1 乙女の花園》 | 电视动画《舞-乙HiME》 | 2005-12-21 发行 |
+
+### Disc 3：2005—2009
+
+| 曲序与歌曲 | 最早发行与原始专辑 | 关联作品 | 说明 |
+| --- | --- | --- | --- |
+| 1–8<br>a song of storm and fire；believe；dewdrops；I talk to the rain；ship of fools；hear our prayer；guess how much I love you；best years in our lives | 2005<br>《Tsubasa Chronicle Original Soundtrack — Future Soundscape I》 | NHK 电视动画《翼·年代记》 | 2005-07-06 发行 |
+| 9–10<br>voices silently sing；blue clouds | 2005<br>《Tsubasa Chronicle Original Soundtrack — Future Soundscape II》 | 同上 | 官方页及编号 VICL-61662 均指向 II；VGMdb Early BEST Notes 曾误写 III |
+| 11–12<br>once upon a time there was you and me；ring your song | 2006<br>《Tsubasa Chronicle Original Soundtrack — Future Soundscape IV》 | 同上 | 2006-09-21 发行 |
+| 13–15<br>天翔；everlasting song；目覚めの朝 | 2005<br>《Erementar Gerad / Elemental Gelade Original Soundtrack 1》 | 电视动画《Elemental Gelade／武器种族传说》 | 2005-04-21 发行；这里的 everlasting song 是英文原声曲，不是 2009 年日语重构版 |
+| 16–17<br>el cazador；hit it and run! | 2007<br>《EL CAZADOR DE LA BRUJA ORIGINAL SOUNDTRACK 1》 | 电视动画《El Cazador de la Bruja》 | 2007-07-25 发行 |
+| 18–19<br>carnaval in blue；paradise regained | 2007<br>《EL CAZADOR DE LA BRUJA ORIGINAL SOUNDTRACK 2》 | 同上 | 2007-09-21 发行 |
+| 20–23<br>Pandora hearts；Melody；Contractor；Bloody rabbit | 2009<br>《Pandora Hearts ORIGINAL SOUNDTRACK 1》 | 电视动画《Pandora Hearts》 | 2009-07-08 发行 |
+| 24<br>Limits | 2009<br>《Pandora Hearts ORIGINAL SOUNDTRACK 2》 | 同上 | 2009-09-30 发行；是本精选年代最晚的一批 |
+
+### 作品覆盖摘要
+
+| 作品 | 最早年份 | 收录曲数 |
+| --- | ---: | ---: |
+| NOIR | 2001 | 11 |
+| Aquarian Age: Sign for Evolution | 2002 | 3 |
+| .hack//SIGN | 2002 | 6 |
+| .hack//Liminality | 2002 | 3 |
+| Xenosaga Episode II | 2004 | 3 |
+| Xenosaga Episode III | 2006 | 7 |
+| MADLAX | 2004 | 5 |
+| The Velveteen Rabbit 音声剧 | 2004 | 2 |
+| 舞-HiME | 2004 | 5 |
+| 舞-乙HiME | 2005 | 2 |
+| 翼·年代记 | 2005–2006 | 12 |
+| Elemental Gelade | 2005 | 3 |
+| El Cazador de la Bruja | 2007 | 4 |
+| Pandora Hearts | 2009 | 5 |
+
 ## 最终区别
 
 **FictionJunction 的艺术性在于“连接”。**它把梶浦由记不同时期、不同来源、不同编制的音乐重新放入同一个活的表演系统。统一性来自梶浦本人，而不是固定的作品边界。
@@ -193,3 +270,5 @@ Kalafina 早期更接近先在录音室设计高密度声部，再学习如何�
 [^12]: [Billboard Japan：2017 年《百火撩乱》访谈](https://www.billboard-japan.com/special/detail/2067)
 [^13]: [SPICE：Kalafina 9 周年“变得更简单需要勇气”访谈](https://spice.eplus.jp/articles/101777)
 [^14]: [SPICE：2019 年解散声明与梶浦由记完整评论](https://spice.eplus.jp/articles/231047)
+[^15]: [FlyingDog：Early BEST 官方发行公告及逐曲源专辑](https://www.jvcmusic.co.jp/-/News/A016061/28.html)
+[^16]: [VGMdb：Early BEST 完整曲序、Credits 与作品对应](https://vgmdb.net/album/132793)
