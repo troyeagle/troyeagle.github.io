@@ -1,0 +1,21 @@
+name: Check static synchronization
+
+on:
+  pull_request:
+    paths: ['.github/**']
+  push:
+    branches: [master]
+    paths: ['.github/scripts/**', '.github/tests/**', '.github/workflows/**', '.github/apps.json']
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s .github/tests -v
