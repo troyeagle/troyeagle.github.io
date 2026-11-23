@@ -1,4 +1,17 @@
 {
-  "schema": 1,
-  "apps": {}
+  "apps": {
+    "clue": {
+      "app": "clue",
+      "artifactId": 14798172530,
+      "digest": "0b822fb11d36177b62ed0d66367533988aa0f6627e983dceda3ff6ecf7d074f4",
+      "repository": "troyeagle/larp-clues-presentation",
+      "runAttempt": 1,
+      "runId": "45132013817",
+      "runNumber": 2,
+      "schema": 1,
+      "sha": "367e57207b1660ed0ce4802850ba3ce7fb46d752",
+      "workflowId": 427382082
+    }
+  },
+  "schema": 1
 }
