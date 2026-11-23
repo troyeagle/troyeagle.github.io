@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "apps": {
+    "clue": {
+      "enabled": true,
+      "repository": "troyeagle/larp-clues-presentation",
+      "branch": "main",
+      "workflow": "publish-static.yml",
+      "buildJob": "Build static application",
+      "artifact": "site-clue",
+      "destination": "clue",
+      "allowSourceMaps": true
+    }
+  }
+}
