@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/clue/static/css/main.b3f28ba7.css",
-    "main.js": "/clue/static/js/main.efb8850f.js",
-    "static/js/307.6d8617e6.chunk.js": "/clue/static/js/307.6d8617e6.chunk.js",
+    "main.css": "/clue/static/css/main.8f24c0ad.css",
+    "main.js": "/clue/static/js/main.d79abdd6.js",
+    "static/js/787.3aa55197.chunk.js": "/clue/static/js/787.3aa55197.chunk.js",
     "index.html": "/clue/index.html",
-    "main.b3f28ba7.css.map": "/clue/static/css/main.b3f28ba7.css.map",
-    "main.efb8850f.js.map": "/clue/static/js/main.efb8850f.js.map",
-    "307.6d8617e6.chunk.js.map": "/clue/static/js/307.6d8617e6.chunk.js.map"
+    "main.8f24c0ad.css.map": "/clue/static/css/main.8f24c0ad.css.map",
+    "main.d79abdd6.js.map": "/clue/static/js/main.d79abdd6.js.map",
+    "787.3aa55197.chunk.js.map": "/clue/static/js/787.3aa55197.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.b3f28ba7.css",
-    "static/js/main.efb8850f.js"
+    "static/css/main.8f24c0ad.css",
+    "static/js/main.d79abdd6.js"
   ]
 }
