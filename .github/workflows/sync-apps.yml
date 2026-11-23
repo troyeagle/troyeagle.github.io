@@ -1,0 +1,92 @@
+name: Sync static applications
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Validate and stage updates without committing or publishing
+        type: boolean
+        default: true
+  schedule:
+    - cron: '17,47 * * * *'
+
+permissions: {}
+
+# Every run scans all configured apps, so replacing a pending notification does
+# not lose an individual application's update. Schedules also repair missed notifications.
+concurrency:
+  group: static-site-sync
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    if: vars.SITE_SYNC_ENABLED == 'true' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    outputs:
+      changed: ${{ steps.prepare.outputs.changed }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - id: repositories
+        name: Read the trusted source allowlist
+        run: echo "names=$(python3 .github/scripts/sync_apps.py repositories)" >> "$GITHUB_OUTPUT"
+      - id: reader
+        name: Create a source-read token
+        if: vars.SITE_SYNC_APP_ID != ''
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        with:
+          app-id: ${{ vars.SITE_SYNC_APP_ID }}
+          private-key: ${{ secrets.SITE_SYNC_APP_PRIVATE_KEY }}
+          owner: troyeagle
+          repositories: ${{ steps.repositories.outputs.names }}
+          permission-contents: read
+          permission-actions: read
+      - id: prepare
+        name: Verify source builds and stage static files
+        env:
+          SOURCE_TOKEN: ${{ steps.reader.outputs.token || secrets.SOURCE_ARTIFACTS_TOKEN }}
+        run: python3 .github/scripts/sync_apps.py prepare --prepared "$RUNNER_TEMP/prepared-static-updates"
+      - name: Upload the verified update plan
+        if: steps.prepare.outputs.changed == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: prepared-static-updates
+          path: ${{ runner.temp }}/prepared-static-updates/
+          if-no-files-found: error
+          retention-days: 3
+
+  publish:
+    needs: prepare
+    if: vars.SITE_SYNC_PUBLISH_ENABLED == 'true' && needs.prepare.outputs.changed == 'true' && !(github.event_name == 'workflow_dispatch' && inputs.dry_run)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: master
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: prepared-static-updates
+          path: ${{ runner.temp }}/prepared-static-updates/
+      - id: writer
+        name: Create a blog-only write token
+        if: vars.SITE_SYNC_APP_ID != ''
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        with:
+          app-id: ${{ vars.SITE_SYNC_APP_ID }}
+          private-key: ${{ secrets.SITE_SYNC_APP_PRIVATE_KEY }}
+          owner: troyeagle
+          repositories: troyeagle.github.io
+          permission-contents: write
+      - name: Revalidate and commit only application directories
+        env:
+          PUBLISH_TOKEN: ${{ steps.writer.outputs.token || secrets.BLOG_PUBLISH_TOKEN }}
+        run: python3 .github/scripts/sync_apps.py publish --prepared "$RUNNER_TEMP/prepared-static-updates"
