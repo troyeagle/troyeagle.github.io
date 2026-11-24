@@ -1,5 +1,17 @@
 # 维护说明
 
+## AI 协作者匿名规约
+
+所有在本仓库工作的 AI agent（ChatGPT / Codex、Claude、DeepSeek、TRAE 等）统一遵守根目录 [AGENTS.md](AGENTS.md)。AI 参与的提交只使用一条以下尾注，多 agent 协作也不分别署名：
+
+```text
+Co-authored-by: Bot <bot@anonymous.com>
+```
+
+主作者和提交者仍使用用户指定的仓库身份。推送前核对实际提交信息，修正工具或钩子自动追加的默认 AI 身份。Claude 的 [CLAUDE.md](CLAUDE.md) 引用同一份规则；不自动读取这些文件的工具，应把 `AGENTS.md` 作为项目指令加载。
+
+这些维护规则文件在 Jekyll 构建中排除，作为 Git 仓库操作规约维护。
+
 ## 独立应用自动同步
 
 各应用共用博客端接收流程，使用 fine-grained PAT 认证。接入是否启用，以 [应用白名单](.github/apps.json) 中的 `enabled` 为准；新应用先暂停，完成预览后再启用。
