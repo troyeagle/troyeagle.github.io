@@ -115,6 +115,24 @@ class StaticSyncTests(unittest.TestCase):
     def write_config(self):
         (self.root / ".github/apps.json").write_text(json.dumps(self.config))
 
+    def test_independent_project_site_is_outside_the_blog_allowlist(self):
+        self.config['apps']['expedition-alfonso-showcase'] = {
+            **APP, 'repository': 'troyeagle/expedition-alfonso-showcase',
+            'destination': 'expedition-alfonso-showcase'}
+        self.write_config()
+        with self.assertRaisesRegex(ValueError, 'outside the app allowlist'):
+            sync.load_config(self.root)
+
+    def test_old_prepared_project_update_cannot_overwrite_retired_directory(self):
+        target = self.root / 'expedition-alfonso-showcase'
+        target.mkdir(); (target / 'keep.txt').write_text('independent project')
+        self.prepared.mkdir()
+        (self.prepared / 'plan.json').write_text(json.dumps({
+            'schema': 1, 'updates': [{'app': 'expedition-alfonso-showcase'}]}))
+        with self.assertRaisesRegex(ValueError, 'Unknown or duplicated app'):
+            sync.apply_updates(self.root, self.prepared)
+        self.assertEqual((target / 'keep.txt').read_text(), 'independent project')
+
     def prepare(self, api=None):
         return sync.collect(self.root, self.prepared, api or FakeGitHub())
 

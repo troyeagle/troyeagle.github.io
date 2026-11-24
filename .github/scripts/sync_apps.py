@@ -20,7 +20,7 @@ import urllib.request
 import zipfile
 from html.parser import HTMLParser
 
-DESTINATIONS = {"clue", "countdown", "clue-viewer", "merger", "ai-video-reverse", "expedition-alfonso-showcase"}
+DESTINATIONS = {"clue", "countdown", "clue-viewer", "merger", "ai-video-reverse"}
 MANIFEST = "_site-sync.json"
 STATE_PATH = ".github/apps-state.json"
 MAX_BYTES = 256 * 1024 * 1024

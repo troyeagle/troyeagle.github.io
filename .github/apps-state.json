@@ -48,18 +48,6 @@
       "sha": "baa94c67ce61f42159bcc03d176180ad457c0fb0",
       "workflowId": 428579774
     },
-    "expedition-alfonso-showcase": {
-      "app": "expedition-alfonso-showcase",
-      "artifactId": 14902754651,
-      "digest": "2176edbdd1dd2cafb34e00879b7b724c779e9bb0a47b29bcbe2d9b6301918f02",
-      "repository": "troyeagle/expedition-alfonso-showcase",
-      "runAttempt": 1,
-      "runId": "45359471954",
-      "runNumber": 1,
-      "schema": 1,
-      "sha": "c7680cf85a47f5249c6982e57bf4689f48080eae",
-      "workflowId": 428800976
-    },
     "merger": {
       "app": "merger",
       "artifactId": 14890313654,

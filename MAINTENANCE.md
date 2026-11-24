@@ -11,17 +11,21 @@
 | [clue-viewer](https://github.com/troyeagle/clue-viewer) | `master` | pnpm / `dist/` | [/clue-viewer/](https://troyeagle.github.io/clue-viewer/) | [构建](https://github.com/troyeagle/clue-viewer/actions/workflows/publish-static.yml) | [Secrets](https://github.com/troyeagle/clue-viewer/settings/secrets/actions) |
 | [image-merger-fe](https://github.com/troyeagle/image-merger-fe) | `main` | npm / `dist/` | [/merger/](https://troyeagle.github.io/merger/) | [构建](https://github.com/troyeagle/image-merger-fe/actions/workflows/publish-static.yml) | [Secrets](https://github.com/troyeagle/image-merger-fe/settings/secrets/actions) |
 | [ai-video-reverse](https://github.com/troyeagle/ai-video-reverse) | `main` | Python 标准库 / `dist/` | [/ai-video-reverse/](https://troyeagle.github.io/ai-video-reverse/) | [构建](https://github.com/troyeagle/ai-video-reverse/actions/workflows/publish-static.yml) | [Secrets](https://github.com/troyeagle/ai-video-reverse/settings/secrets/actions) |
-| [expedition-alfonso-showcase](https://github.com/troyeagle/expedition-alfonso-showcase) | `main` | Python 标准库 / `dist/` | [/expedition-alfonso-showcase/](https://troyeagle.github.io/expedition-alfonso-showcase/) | [构建](https://github.com/troyeagle/expedition-alfonso-showcase/actions/workflows/publish-static.yml) | [Secrets](https://github.com/troyeagle/expedition-alfonso-showcase/settings/secrets/actions) |
 
-除原 `clue` 工作流外，各源码项目调用 [共享构建工作流](.github/workflows/build-static-app.yml)，固定调用版本的完整提交 SHA，并让 `publisher_ref` 指向同一版本。共享工作流使用 Node 22 和同一份 [产物打包器](.github/scripts/package-static.mjs)；前端项目沿用各自锁文件，两个独立 HTML 项目使用 Python 3.12 标准库，无需安装应用依赖。后两个项目的产物也拒绝 source map。
+除原 `clue` 工作流外，各源码项目调用 [共享构建工作流](.github/workflows/build-static-app.yml)，固定调用版本的完整提交 SHA，并让 `publisher_ref` 指向同一版本。共享工作流使用 Node 22 和同一份 [产物打包器](.github/scripts/package-static.mjs)；前端项目沿用各自锁文件，独立 HTML 项目使用 Python 3.12 标准库，无需安装应用依赖。独立 HTML 项目的产物也拒绝 source map。
 
 源码的表中发布分支构建成功后，博客端同步工作流校验并复制新产物，直接提交到本仓库 `master`，再由 GitHub Pages 发布；产物更新不会逐次创建 PR。配置通知 Secret 后，源码构建会立即请求同步；未配置时仍约每 30 分钟定时检查，GitHub 调度可能延迟。同一构建不会重复提交。普通博客发布会部署仓库里已有的应用文件，不会重新构建源码项目。
 
-### 两个独立 HTML 项目的发布边界
+### 独立 HTML 项目的发布边界
 
 - `ai-video-reverse`：源码 `.github/static-pages.json` 明确登记允许公开的案例；`scripts/build_static_pages.py` 重建并验证案例，导出目录首页及 `<案例ID>/index.html`。当前案例地址为 [/ai-video-reverse/BV1MssN6ZE1v/](https://troyeagle.github.io/ai-video-reverse/BV1MssN6ZE1v/)。线上页面保留完整讲稿、翻页和自动演示，原声音频仅在本地提供，可从页面中的原视频链接收听。参考帧、验证截图、文章原稿、ASR 输出、媒体、模型和可编辑模板不进入产物。
-- `expedition-alfonso-showcase`：本地位置虽然在 `flight-price-watch/` 下，但其远端是独立的 `troyeagle/expedition-alfonso-showcase`。`scripts/build_static_pages.py` 调用原 `build-page.py`，将 `assets/public-source.html` 导出为 `dist/index.html`，并附带 `LICENSE.txt`；原始演示快照、测试截图和验证脚本不发布。许可证与第三方声明须保留。
-- 两个源码仓库均在 `.github/STATIC_PUBLISH.md` 记录本地重建、发布分支、工作流入口、通知配置和恢复方法。新增视频案例必须先登记，再随 `main` 提交；不会自动收集仓库中的任意 HTML 文件。
+- 视频源码仓库在 `.github/STATIC_PUBLISH.md` 记录本地重建、发布分支、工作流入口、通知配置和恢复方法。新增视频案例必须先登记，再随 `main` 提交；不会自动收集仓库中的任意 HTML 文件。
+
+### 独立项目站
+
+[expedition-alfonso-showcase](https://github.com/troyeagle/expedition-alfonso-showcase) 是公开仓库，由自身 GitHub Actions 直接构建并部署 [项目 Pages](https://troyeagle.github.io/expedition-alfonso-showcase/)。发布来源在 [该仓库 Pages 设置](https://github.com/troyeagle/expedition-alfonso-showcase/settings/pages) 选择 GitHub Actions；详细规约见 [源码发布说明](https://github.com/troyeagle/expedition-alfonso-showcase/blob/main/.github/STATIC_PUBLISH.md)。
+
+此项目的产物、发布状态和收集配置已迁出博客；原访问路径保持不变。`SOURCE_ARTIFACTS_TOKEN` 的推荐授权范围是上表五个仓库，可取消对该独立项目的读取授权，通常无需更换 Token 值。
 
 ### 配置与运行入口
 
@@ -46,12 +50,12 @@
 
 | Secret 名称 | PAT 授权仓库 | 最小权限 |
 | --- | --- | --- |
-| `SOURCE_ARTIFACTS_TOKEN` | 上表六个源码仓库，仅选择这六个 | Contents: read；Actions: read |
+| `SOURCE_ARTIFACTS_TOKEN` | 上表五个源码仓库，仅选择这五个 | Contents: read；Actions: read |
 | `BLOG_PUBLISH_TOKEN` | `troyeagle/troyeagle.github.io` | Contents: read/write |
 
-读取 PAT 可以复用：编辑原 PAT，将仓库授权增加到上表六个源码仓库，保持只读权限。仅修改授权通常不需要更换 Secret；如重新生成了令牌，则覆盖博客中的 `SOURCE_ARTIFACTS_TOKEN`。`BLOG_PUBLISH_TOKEN` 仍只授权博客仓库，无需分发到源码仓库。
+读取 PAT 可以复用：编辑原 PAT，将仓库授权增加到上表五个源码仓库，保持只读权限。仅修改授权通常不需要更换 Secret；如重新生成了令牌，则覆盖博客中的 `SOURCE_ARTIFACTS_TOKEN`。`BLOG_PUBLISH_TOKEN` 仍只授权博客仓库，无需分发到源码仓库。
 
-即时通知也是可选配置：一个仅授权 **博客仓库 Actions: write** 的 PAT 可以在六个源码仓库中复用，分别保存为各仓库的 `BLOG_DISPATCH_TOKEN`。个人账户的 repository Secret 相互独立，因此同一个值需要分别配置；不使用 `BLOG_PUBLISH_TOKEN` 代替通知令牌。未配置通知时，博客端仍通过定时检查和手动运行同步。令牌值只保存在 Actions Secrets 中，不写入仓库文件。
+即时通知也是可选配置：一个仅授权 **博客仓库 Actions: write** 的 PAT 可以在五个源码仓库中复用，分别保存为各仓库的 `BLOG_DISPATCH_TOKEN`。个人账户的 repository Secret 相互独立，因此同一个值需要分别配置；不使用 `BLOG_PUBLISH_TOKEN` 代替通知令牌。未配置通知时，博客端仍通过定时检查和手动运行同步。令牌值只保存在 Actions Secrets 中，不写入仓库文件。
 
 ### 常用操作
 

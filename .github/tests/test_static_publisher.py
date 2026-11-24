@@ -83,7 +83,7 @@ class PublisherProtocolTests(unittest.TestCase):
         self.assertEqual(first, second)
 
     def test_python_projects_use_no_dependency_lockfile_or_install(self):
-        for app in ['ai-video-reverse', 'expedition-alfonso-showcase']:
+        for app in ['ai-video-reverse']:
             with self.subTest(app=app):
                 output = self.root / (app + '-outputs')
                 env = {**self.env, 'GITHUB_REPOSITORY': 'troyeagle/' + app, 'GITHUB_OUTPUT': str(output)}
@@ -96,7 +96,7 @@ class PublisherProtocolTests(unittest.TestCase):
                 self.assertEqual(values['release_ref'], 'refs/heads/main')
 
     def test_new_projects_package_nested_html_under_their_own_prefix(self):
-        for app in ['ai-video-reverse', 'expedition-alfonso-showcase']:
+        for app in ['ai-video-reverse']:
             with self.subTest(app=app):
                 (self.dist / 'index.html').write_text('<a href="deck/">Open</a>')
                 (self.dist / 'deck').mkdir(exist_ok=True)
@@ -108,3 +108,10 @@ class PublisherProtocolTests(unittest.TestCase):
                 expected = {'schema': 1, 'app': app, 'repository': env['GITHUB_REPOSITORY'],
                             'sha': env['GITHUB_SHA'], 'runId': '21', 'runNumber': 3, 'runAttempt': 1}
                 receiver.validate_files(files, expected, {'destination': app, 'allowSourceMaps': False})
+
+    def test_independent_project_site_cannot_use_the_blog_packager(self):
+        env = {**self.env, 'GITHUB_REPOSITORY': 'troyeagle/expedition-alfonso-showcase',
+               'GITHUB_REF': 'refs/heads/main', 'GITHUB_OUTPUT': str(self.root / 'outputs')}
+        result = self.run_publisher('profile', 'expedition-alfonso-showcase', env)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.root / 'outputs').exists())

@@ -2,8 +2,7 @@
 
 Applications are `larp-clues-presentation` → `/clue/`, `larp-countdown` →
 `/countdown/`, `clue-viewer` → `/clue-viewer/`, `image-merger-fe` → `/merger/`,
-`ai-video-reverse` → `/ai-video-reverse/` and `expedition-alfonso-showcase` →
-`/expedition-alfonso-showcase/`.
+`ai-video-reverse` → `/ai-video-reverse/`.
 Jekyll, Hux templates, article files and all other application directories keep
 their existing layout. Source code continues to live in its own repository.
 
@@ -33,7 +32,7 @@ GitHub schedules are best-effort and may run late.
 ## Credentials
 
 Current authentication uses fine-grained PATs. A GitHub App is an optional
-alternative, installed only on the six configured sources and the blog. Give the installation
+alternative, installed only on the five configured sources and the blog. Give the installation
 `Contents: read/write` and `Actions: read`. Store:
 
 | Blog setting | Value |
@@ -50,7 +49,7 @@ The same two fine-grained personal access tokens are stored only in the blog:
 
 | Blog secret | Repository scope | Permissions |
 | --- | --- | --- |
-| `SOURCE_ARTIFACTS_TOKEN` | All six configured source repositories | Contents read, Actions read |
+| `SOURCE_ARTIFACTS_TOKEN` | All five configured source repositories | Contents read, Actions read |
 | `BLOG_PUBLISH_TOKEN` | `troyeagle.github.io` | Contents write |
 
 For immediate notifications, create a separate fine-grained token scoped only
@@ -135,11 +134,11 @@ with a concurrent article commit. They use temporary directories and local Git
 repositories, not the public site. `check-static-sync.yml` runs them for changes
 to this integration.
 
-## Standalone HTML profiles
+## Standalone HTML profile
 
-The two new sources use Python 3.12 standard-library builders and checks. Node 22
+The video source uses Python 3.12 standard-library builders and checks. Node 22
 is used only for the shared manifest packager; dependency install and package
-manager caches are skipped for these profiles. Existing source callers remain
+manager caches are skipped for this profile. Existing source callers remain
 pinned to their existing publisher revisions.
 
 `ai-video-reverse/.github/static-pages.json` is an explicit public case registry.
@@ -148,10 +147,11 @@ validates the full slide/transcript data, and marks narration as local-only in
 published decks. Media, reference frames, editable templates and working records
 are not copied into releases.
 
-`expedition-alfonso-showcase` is its own GitHub repository despite its nested local
-checkout under `flight-price-watch`. Its builder retains the current host bridge,
-embeds the exact scene, and exports only `index.html` and `LICENSE.txt`. Evidence
-screenshots and original source snapshots are not part of the payload.
+`expedition-alfonso-showcase` now deploys its own project Pages from its public
+source repository, using the built-in GITHUB_TOKEN and OIDC. Its URL remains
+`https://troyeagle.github.io/expedition-alfonso-showcase/`. It is not a managed blog
+application: its output directory, state entry, collector configuration and current
+packager profile have been removed. Old prepared updates cannot reintroduce it.
 
 See each source's `.github/STATIC_PUBLISH.md` and the root `MAINTENANCE.md` for
 commands, URLs, notification-secret configuration and recovery. The read-only

@@ -41,16 +41,6 @@
       "destination": "ai-video-reverse",
       "allowSourceMaps": false
     },
-    "expedition-alfonso-showcase": {
-      "enabled": true,
-      "repository": "troyeagle/expedition-alfonso-showcase",
-      "branch": "main",
-      "workflow": "publish-static.yml",
-      "buildJob": "Publish static application / Build static application",
-      "artifact": "site-expedition-alfonso-showcase",
-      "destination": "expedition-alfonso-showcase",
-      "allowSourceMaps": false
-    },
     "merger": {
       "enabled": true,
       "repository": "troyeagle/image-merger-fe",
