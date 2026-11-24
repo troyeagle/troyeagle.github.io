@@ -1,5 +1,17 @@
 {
   "apps": {
+    "ai-video-reverse": {
+      "app": "ai-video-reverse",
+      "artifactId": 14904211862,
+      "digest": "6b54797660e6c5de96ee6d033cd66e6d41fe926b17790f0f16f1a421dc94ffc3",
+      "repository": "troyeagle/ai-video-reverse",
+      "runAttempt": 1,
+      "runId": "45359473604",
+      "runNumber": 1,
+      "schema": 1,
+      "sha": "2de2e8ad3c634c42c1998d909f7a93214da630dd",
+      "workflowId": 428800998
+    },
     "clue": {
       "app": "clue",
       "artifactId": 14798172530,
@@ -35,6 +47,18 @@
       "schema": 1,
       "sha": "baa94c67ce61f42159bcc03d176180ad457c0fb0",
       "workflowId": 428579774
+    },
+    "expedition-alfonso-showcase": {
+      "app": "expedition-alfonso-showcase",
+      "artifactId": 14902754651,
+      "digest": "2176edbdd1dd2cafb34e00879b7b724c779e9bb0a47b29bcbe2d9b6301918f02",
+      "repository": "troyeagle/expedition-alfonso-showcase",
+      "runAttempt": 1,
+      "runId": "45359471954",
+      "runNumber": 1,
+      "schema": 1,
+      "sha": "c7680cf85a47f5249c6982e57bf4689f48080eae",
+      "workflowId": 428800976
     },
     "merger": {
       "app": "merger",
