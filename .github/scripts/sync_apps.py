@@ -163,13 +163,13 @@ class GitHub:
         return unpack_archive(data)
 
 
-def collect(root, output, api):
+def collect(root, output, api, include_disabled=False):
     apps, state = load_config(root), load_state(root)
     require(not output.exists(), "Prepared output directory already exists")
     output.mkdir(parents=True)
     updates = []
     for name, app in apps.items():
-        if not app.get("enabled", True):
+        if not app.get("enabled", True) and not include_disabled:
             continue
         repository = app["repository"]
         workflow = f'/repos/{repository}/actions/workflows/{app["workflow"]}'
@@ -304,12 +304,13 @@ def main():
     parser.add_argument("command", choices=["repositories", "prepare", "publish"])
     parser.add_argument("--root", type=Path, default=Path.cwd())
     parser.add_argument("--prepared", type=Path)
+    parser.add_argument("--include-disabled", action="store_true", help="Collect paused applications for onboarding previews")
     args = parser.parse_args()
     if args.command == "repositories":
         print(",".join(sorted({app["repository"].split("/", 1)[1] for app in load_config(args.root).values()})))
     elif args.command == "prepare":
         require(args.prepared is not None, "Specify --prepared")
-        updates = collect(args.root, args.prepared, GitHub(os.environ.get("SOURCE_TOKEN")))
+        updates = collect(args.root, args.prepared, GitHub(os.environ.get("SOURCE_TOKEN")), include_disabled=args.include_disabled)
         if os.environ.get("GITHUB_OUTPUT"):
             with open(os.environ["GITHUB_OUTPUT"], "a") as output:
                 output.write(f'changed={str(bool(updates)).lower()}\n')

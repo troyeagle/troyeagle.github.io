@@ -167,6 +167,18 @@ class StaticSyncTests(unittest.TestCase):
         self.assertEqual(sync.apply_updates(self.root, self.prepared), [])
         self.assertTrue((self.root / "clue/keep.txt").exists())
 
+    def test_onboarding_preview_can_collect_paused_app_without_publishing_it(self):
+        self.config["apps"]["clue"]["enabled"] = False
+        self.write_config()
+        self.assertEqual(len(sync.collect(self.root, self.prepared, FakeGitHub(), include_disabled=True)), 1)
+        self.assertEqual(sync.apply_updates(self.root, self.prepared), [])
+        self.assertTrue((self.root / "clue/keep.txt").exists())
+
+    def test_regular_collection_skips_paused_app(self):
+        self.config["apps"]["clue"]["enabled"] = False
+        self.write_config()
+        self.assertEqual(self.prepare(), [])
+
     def test_symlink_destination_is_rejected(self):
         self.prepare()
         (self.root / "clue/keep.txt").unlink()

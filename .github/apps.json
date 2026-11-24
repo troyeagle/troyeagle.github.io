@@ -10,6 +10,36 @@
       "artifact": "site-clue",
       "destination": "clue",
       "allowSourceMaps": true
+    },
+    "countdown": {
+      "enabled": false,
+      "repository": "troyeagle/larp-countdown",
+      "branch": "main",
+      "workflow": "publish-static.yml",
+      "buildJob": "Publish static application / Build static application",
+      "artifact": "site-countdown",
+      "destination": "countdown",
+      "allowSourceMaps": true
+    },
+    "clue-viewer": {
+      "enabled": false,
+      "repository": "troyeagle/clue-viewer",
+      "branch": "master",
+      "workflow": "publish-static.yml",
+      "buildJob": "Publish static application / Build static application",
+      "artifact": "site-clue-viewer",
+      "destination": "clue-viewer",
+      "allowSourceMaps": false
+    },
+    "merger": {
+      "enabled": false,
+      "repository": "troyeagle/image-merger-fe",
+      "branch": "main",
+      "workflow": "publish-static.yml",
+      "buildJob": "Publish static application / Build static application",
+      "artifact": "site-merger",
+      "destination": "merger",
+      "allowSourceMaps": false
     }
   }
 }
