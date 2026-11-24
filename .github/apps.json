@@ -32,7 +32,7 @@
       "allowSourceMaps": false
     },
     "ai-video-reverse": {
-      "enabled": false,
+      "enabled": true,
       "repository": "troyeagle/ai-video-reverse",
       "branch": "main",
       "workflow": "publish-static.yml",
@@ -42,7 +42,7 @@
       "allowSourceMaps": false
     },
     "expedition-alfonso-showcase": {
-      "enabled": false,
+      "enabled": true,
       "repository": "troyeagle/expedition-alfonso-showcase",
       "branch": "main",
       "workflow": "publish-static.yml",
