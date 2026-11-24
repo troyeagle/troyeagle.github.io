@@ -7,6 +7,10 @@ on:
         description: Validate and stage updates without committing or publishing
         type: boolean
         default: true
+      include_disabled:
+        description: Include paused applications in an onboarding preview (requires dry_run)
+        type: boolean
+        default: false
   schedule:
     - cron: '17,47 * * * *'
 
@@ -49,7 +53,13 @@ jobs:
         name: Verify source builds and stage static files
         env:
           SOURCE_TOKEN: ${{ steps.reader.outputs.token || secrets.SOURCE_ARTIFACTS_TOKEN }}
-        run: python3 .github/scripts/sync_apps.py prepare --prepared "$RUNNER_TEMP/prepared-static-updates"
+          INCLUDE_DISABLED: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && inputs.include_disabled }}
+        run: |
+          preview_flags=()
+          if [[ "$INCLUDE_DISABLED" == 'true' ]]; then
+            preview_flags+=(--include-disabled)
+          fi
+          python3 .github/scripts/sync_apps.py prepare --prepared "$RUNNER_TEMP/prepared-static-updates" "${preview_flags[@]}"
       - name: Upload the verified update plan
         if: steps.prepare.outputs.changed == 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

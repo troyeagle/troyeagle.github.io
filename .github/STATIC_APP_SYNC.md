@@ -1,13 +1,17 @@
 # Static application synchronization
 
-The first application is `troyeagle/larp-clues-presentation` → `/clue/`.
+Applications are `larp-clues-presentation` → `/clue/`, `larp-countdown` →
+`/countdown/`, `clue-viewer` → `/clue-viewer/` and `image-merger-fe` → `/merger/`.
 Jekyll, Hux templates, article files and all other application directories keep
 their existing layout. Source code continues to live in its own repository.
 
 ## Workflow
 
-1. The source workflow tests and builds the application on `main`.
-2. It uploads `site-clue`, including `_site-sync.json` with the source SHA,
+1. Each source workflow tests and builds on its configured release branch.
+   The three additional apps use `build-static-app.yml` pinned to a full commit
+   SHA, with `publisher_ref` pointing to the same revision. The existing clue
+   workflow is unchanged.
+2. It uploads `site-<app>`, including `_site-sync.json` with the source SHA,
    workflow run identity and SHA-256 hashes for every file.
 3. A separate notification job dispatches `sync-apps.yml` on this repository's
    `master`. Without the notification credential, manual and scheduled collection
@@ -26,8 +30,8 @@ GitHub schedules are best-effort and may run late.
 
 ## Credentials
 
-Preferred: create a GitHub App owned by `troyeagle`, installed only on
-`larp-clues-presentation` and `troyeagle.github.io`. Give the installation
+Current authentication uses fine-grained PATs. A GitHub App is an optional
+alternative, installed only on the four configured sources and the blog. Give the installation
 `Contents: read/write` and `Actions: read`. Store:
 
 | Blog setting | Value |
@@ -40,18 +44,20 @@ with **Contents read, Actions read**. The publisher requests a different token
 scoped to **the blog only, Contents write**. The private key is stored only in
 the blog repository, and source build jobs never receive it.
 
-An alternative for the pilot is two fine-grained personal access tokens stored
-only in the blog:
+The same two fine-grained personal access tokens are stored only in the blog:
 
 | Blog secret | Repository scope | Permissions |
 | --- | --- | --- |
-| `SOURCE_ARTIFACTS_TOKEN` | `larp-clues-presentation` | Contents read, Actions read |
+| `SOURCE_ARTIFACTS_TOKEN` | All four configured source repositories | Contents read, Actions read |
 | `BLOG_PUBLISH_TOKEN` | `troyeagle.github.io` | Contents write |
 
 For immediate notifications, create a separate fine-grained token scoped only
 to **troyeagle.github.io, Actions write**, and store it as `BLOG_DISPATCH_TOKEN`
 in **larp-clues-presentation**. This token cannot write blog contents. The
 notification job is separate from the job executing application code.
+The same notification token can be reused as a repository secret in each source;
+repository secrets on personal accounts are not automatically shared. Never
+distribute the blog Contents-write token to source repositories.
 
 Use Actions secrets; do not place keys or tokens in files or chat messages.
 Fine-grained PATs expire and require renewal. GitHub App installation tokens
@@ -65,14 +71,14 @@ are generated per job and automatically revoked by the official action.
 3. Set the blog repository variable `SITE_SYNC_ENABLED` to `true`. Keep
    `SITE_SYNC_PUBLISH_ENABLED` unset or `false`. Collection and validation can
    run, but every publishing job is skipped until the second flag is enabled.
-4. Run **Build static application** in the source repo if no artifact is ready.
+4. Run **Build static application** on the source release branch if no artifact is ready.
 5. Run **Sync static applications** in the blog with `dry_run: true` (the default).
    Inspect its summary and the `prepared-static-updates` artifact. No write
    credential is generated and no commit is made during this run.
 6. After reviewing the preview, set `SITE_SYNC_PUBLISH_ENABLED` to `true`, then
    run it again with `dry_run: false` to publish. Verify the resulting commit
-   touches only `clue/` and `.github/apps-state.json`, then check the normal
-   GitHub Pages deployment and `/clue/`.
+   touches only the configured app directories and `.github/apps-state.json`,
+   then check the normal GitHub Pages deployment and app URLs.
 7. Configure `BLOG_DISPATCH_TOKEN` when the first publish is verified, so future
    source updates immediately request synchronization.
 
@@ -88,15 +94,17 @@ not the workflow's default token. Existing Pages settings remain branch-based.
 
 - `.github/apps.json` is the trusted allowlist. An event cannot supply a source
   repository, target path, shell command or download URL.
-- Only `clue` is configured for the pilot. Other directories are untouched.
+- New applications start with `enabled: false`. To preview them without changing
+  the global publication flag, dispatch with both `dry_run: true` and
+  `include_disabled: true`. Only a dry run can opt into collecting disabled apps;
+  publication also independently skips disabled entries.
 - Failed builds are skipped. Invalid downloaded artifacts fail validation
   before any published directory is replaced.
 - Every file must be listed in the manifest. Symlinks, special files, hidden
   paths, source directories and traversal paths are rejected. Output size and
   entry count are bounded. HTML assets must resolve inside the app directory.
-- Source maps are allowed for the public pilot, matching its existing published
-  output. Use `allowSourceMaps: false` and disable production source maps in the
-  source build before onboarding private applications.
+- Source maps are allowed for the two public React apps. Both private Vite apps
+  explicitly disable source maps, and their receiver policies reject them.
 - Publishing fetches the latest blog `master` and retries normal pushes up to
   three times. It never force-pushes. This protects concurrent article commits.
 - `publish` is restricted to the disposable GitHub Actions checkout; it refuses
@@ -117,8 +125,10 @@ not the workflow's default token. Existing Pages settings remain branch-based.
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s .github/tests -v
 ```
 
-The tests include tampered manifests, traversal / symlink rejection, unchanged
-blog files, stale updates, pausing, failed builds and a real Git push conflict
+The tests include publisher/receiver protocol compatibility, private source map
+rejection, trusted repository/branch checks, tampered manifests, traversal /
+symlink rejection, paused-app previews, unchanged blog files, stale updates,
+failed builds and a real Git push conflict
 with a concurrent article commit. They use temporary directories and local Git
 repositories, not the public site. `check-static-sync.yml` runs them for changes
 to this integration.
