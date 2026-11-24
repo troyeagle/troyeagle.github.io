@@ -69,6 +69,35 @@ class FakeGitHub:
 
 
 class StaticSyncTests(unittest.TestCase):
+    def check_documents(self, documents):
+        files = {name: data.encode() for name, data in documents.items()}
+        files[sync.MANIFEST] = json.dumps({**BUILD, 'files': [
+            {'path': name, 'size': len(data), 'sha256': hashlib.sha256(data).hexdigest()}
+            for name, data in files.items()
+        ]}).encode()
+        return sync.validate_files(files, BUILD, APP)
+
+    def test_nested_pages_support_directory_links_and_internal_parent_links(self):
+        self.check_documents({'index.html': '<a href="decks/first/">Deck</a>',
+                              'decks/first/index.html': '<a href="../../">Home</a><use href="#icon"/>'})
+
+    def test_missing_asset_in_nested_html_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, 'missing static asset'):
+            self.check_documents({'index.html': '<a href="deck/">Deck</a>',
+                                  'deck/index.html': '<img src="missing.png">'})
+
+    def test_decoded_parent_reference_cannot_escape_application(self):
+        with self.assertRaisesRegex(ValueError, 'another site'):
+            self.check_documents({'index.html': '<a href="deck/">Deck</a>',
+                                  'deck/index.html': '<a href="..%2f..%2f_posts/article.html">Outside</a>'})
+
+    def test_inline_script_strings_are_not_html_asset_references(self):
+        self.check_documents({'index.html': '''<script>const example='<img src="not-a-resource.png">';</script><svg><use href="#icon"/></svg>'''})
+
+    def test_base_tag_cannot_change_resource_resolution(self):
+        with self.assertRaisesRegex(ValueError, 'base overrides'):
+            self.check_documents({'index.html': '<base href="/another-app/">'})
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

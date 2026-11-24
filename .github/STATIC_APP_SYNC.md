@@ -1,14 +1,16 @@
 # Static application synchronization
 
 Applications are `larp-clues-presentation` → `/clue/`, `larp-countdown` →
-`/countdown/`, `clue-viewer` → `/clue-viewer/` and `image-merger-fe` → `/merger/`.
+`/countdown/`, `clue-viewer` → `/clue-viewer/`, `image-merger-fe` → `/merger/`,
+`ai-video-reverse` → `/ai-video-reverse/` and `expedition-alfonso-showcase` →
+`/expedition-alfonso-showcase/`.
 Jekyll, Hux templates, article files and all other application directories keep
 their existing layout. Source code continues to live in its own repository.
 
 ## Workflow
 
 1. Each source workflow tests and builds on its configured release branch.
-   The three additional apps use `build-static-app.yml` pinned to a full commit
+   The shared-workflow callers use `build-static-app.yml` pinned to a full commit
    SHA, with `publisher_ref` pointing to the same revision. The existing clue
    workflow is unchanged.
 2. It uploads `site-<app>`, including `_site-sync.json` with the source SHA,
@@ -31,7 +33,7 @@ GitHub schedules are best-effort and may run late.
 ## Credentials
 
 Current authentication uses fine-grained PATs. A GitHub App is an optional
-alternative, installed only on the four configured sources and the blog. Give the installation
+alternative, installed only on the six configured sources and the blog. Give the installation
 `Contents: read/write` and `Actions: read`. Store:
 
 | Blog setting | Value |
@@ -48,12 +50,12 @@ The same two fine-grained personal access tokens are stored only in the blog:
 
 | Blog secret | Repository scope | Permissions |
 | --- | --- | --- |
-| `SOURCE_ARTIFACTS_TOKEN` | All four configured source repositories | Contents read, Actions read |
+| `SOURCE_ARTIFACTS_TOKEN` | All six configured source repositories | Contents read, Actions read |
 | `BLOG_PUBLISH_TOKEN` | `troyeagle.github.io` | Contents write |
 
 For immediate notifications, create a separate fine-grained token scoped only
 to **troyeagle.github.io, Actions write**, and store it as `BLOG_DISPATCH_TOKEN`
-in **larp-clues-presentation**. This token cannot write blog contents. The
+in each source repository that needs immediate notifications. This token cannot write blog contents. The
 notification job is separate from the job executing application code.
 The same notification token can be reused as a repository secret in each source;
 repository secrets on personal accounts are not automatically shared. Never
@@ -63,7 +65,7 @@ Use Actions secrets; do not place keys or tokens in files or chat messages.
 Fine-grained PATs expire and require renewal. GitHub App installation tokens
 are generated per job and automatically revoked by the official action.
 
-## Enable the pilot
+## Onboard a source application
 
 1. Land the receiver on blog `master`; land the source workflow on source `main`.
 2. Configure the credentials above. Keep automatic collection disabled while
@@ -102,7 +104,7 @@ not the workflow's default token. Existing Pages settings remain branch-based.
   before any published directory is replaced.
 - Every file must be listed in the manifest. Symlinks, special files, hidden
   paths, source directories and traversal paths are rejected. Output size and
-  entry count are bounded. HTML assets must resolve inside the app directory.
+  entry count are bounded. All HTML files, including nested deck pages, must resolve local assets and directory links inside the app directory. Real HTML attributes are parsed; inline JavaScript strings are not treated as asset references.
 - Source maps are allowed for the two public React apps. Both private Vite apps
   explicitly disable source maps, and their receiver policies reject them.
 - Publishing fetches the latest blog `master` and retries normal pushes up to
@@ -117,7 +119,7 @@ not the workflow's default token. Existing Pages settings remain branch-based.
 - Workflow recreation or source history rewriting requires an explicit policy /
   state review. Old run numbers and divergent source history are rejected.
 - Artifacts expire. If an uncollected build has expired, trigger a **new** source
-  workflow run on `main` to generate a fresh artifact.
+  workflow run on its configured release branch to generate a fresh artifact.
 
 ## Validation
 
@@ -132,3 +134,26 @@ failed builds and a real Git push conflict
 with a concurrent article commit. They use temporary directories and local Git
 repositories, not the public site. `check-static-sync.yml` runs them for changes
 to this integration.
+
+## Standalone HTML profiles
+
+The two new sources use Python 3.12 standard-library builders and checks. Node 22
+is used only for the shared manifest packager; dependency install and package
+manager caches are skipped for these profiles. Existing source callers remain
+pinned to their existing publisher revisions.
+
+`ai-video-reverse/.github/static-pages.json` is an explicit public case registry.
+Its builder exports a directory index and `<case-id>/index.html`, rebuilds and
+validates the full slide/transcript data, and marks narration as local-only in
+published decks. Media, reference frames, editable templates and working records
+are not copied into releases.
+
+`expedition-alfonso-showcase` is its own GitHub repository despite its nested local
+checkout under `flight-price-watch`. Its builder retains the current host bridge,
+embeds the exact scene, and exports only `index.html` and `LICENSE.txt`. Evidence
+screenshots and original source snapshots are not part of the payload.
+
+See each source's `.github/STATIC_PUBLISH.md` and the root `MAINTENANCE.md` for
+commands, URLs, notification-secret configuration and recovery. The read-only
+`SOURCE_ARTIFACTS_TOKEN` cannot dispatch workflows; immediate notifications need
+the separately scoped `BLOG_DISPATCH_TOKEN`, with scheduled collection as fallback.

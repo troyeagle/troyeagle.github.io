@@ -81,3 +81,30 @@ class PublisherProtocolTests(unittest.TestCase):
         self.assertEqual(self.run_publisher().returncode, 0)
         second = json.loads((self.dist / "_site-sync.json").read_text())
         self.assertEqual(first, second)
+
+    def test_python_projects_use_no_dependency_lockfile_or_install(self):
+        for app in ['ai-video-reverse', 'expedition-alfonso-showcase']:
+            with self.subTest(app=app):
+                output = self.root / (app + '-outputs')
+                env = {**self.env, 'GITHUB_REPOSITORY': 'troyeagle/' + app, 'GITHUB_OUTPUT': str(output)}
+                result = self.run_publisher('profile', app, env)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                values = dict(line.split('=', 1) for line in output.read_text().splitlines())
+                self.assertEqual(values['manager'], 'python')
+                self.assertEqual(values['lockfile'], '')
+                self.assertEqual(values['install'], 'true')
+                self.assertEqual(values['release_ref'], 'refs/heads/main')
+
+    def test_new_projects_package_nested_html_under_their_own_prefix(self):
+        for app in ['ai-video-reverse', 'expedition-alfonso-showcase']:
+            with self.subTest(app=app):
+                (self.dist / 'index.html').write_text('<a href="deck/">Open</a>')
+                (self.dist / 'deck').mkdir(exist_ok=True)
+                (self.dist / 'deck/index.html').write_text('<a href="../">Home</a>')
+                env = {**self.env, 'GITHUB_REPOSITORY': 'troyeagle/' + app, 'GITHUB_REF': 'refs/heads/main'}
+                result = self.run_publisher('package', app, env)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                files = {p.relative_to(self.dist).as_posix(): p.read_bytes() for p in self.dist.rglob('*') if p.is_file()}
+                expected = {'schema': 1, 'app': app, 'repository': env['GITHUB_REPOSITORY'],
+                            'sha': env['GITHUB_SHA'], 'runId': '21', 'runNumber': 3, 'runAttempt': 1}
+                receiver.validate_files(files, expected, {'destination': app, 'allowSourceMaps': False})

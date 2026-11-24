@@ -16,6 +16,12 @@ const profiles = {
   merger: { repository: 'troyeagle/image-merger-fe', branch: 'main', manager: 'npm',
     lockfile: 'package-lock.json', output: 'dist', publicUrl: '/merger', maps: false,
     install: 'npm ci --no-audit --no-fund', test: 'npm run test:unit -- --run', build: 'npm run build' },
+  'ai-video-reverse': { repository: 'troyeagle/ai-video-reverse', branch: 'main', manager: 'python',
+    lockfile: '', output: 'dist', publicUrl: '/ai-video-reverse', maps: false,
+    install: 'true', test: 'python3 -m unittest discover -s tests -v', build: 'python3 scripts/build_static_pages.py' },
+  'expedition-alfonso-showcase': { repository: 'troyeagle/expedition-alfonso-showcase', branch: 'main', manager: 'python',
+    lockfile: '', output: 'dist', publicUrl: '/expedition-alfonso-showcase', maps: false,
+    install: 'true', test: 'python3 -m unittest discover -s tests -v', build: 'python3 scripts/build_static_pages.py' },
 };
 
 const [command, app] = process.argv.slice(2);

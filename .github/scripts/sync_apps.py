@@ -7,6 +7,7 @@ import io
 import json
 import os
 from pathlib import Path, PurePosixPath
+import posixpath
 import re
 import shutil
 import stat
@@ -17,8 +18,9 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import zipfile
+from html.parser import HTMLParser
 
-DESTINATIONS = {"clue", "countdown", "clue-viewer", "merger"}
+DESTINATIONS = {"clue", "countdown", "clue-viewer", "merger", "ai-video-reverse", "expedition-alfonso-showcase"}
 MANIFEST = "_site-sync.json"
 STATE_PATH = ".github/apps-state.json"
 MAX_BYTES = 256 * 1024 * 1024
@@ -91,17 +93,38 @@ def validate_files(files, expected, app):
         names.add(path)
     require(set(files) == names | {MANIFEST} and "index.html" in names, "Unexpected files or missing index.html")
     prefix = f'/{app["destination"]}/'
-    for url in re.findall(r'(?:src|href)=["\']([^"\']+)', files["index.html"].decode("utf-8")):
-        parsed = urllib.parse.urlsplit(url)
-        if parsed.scheme or parsed.netloc or not parsed.path:
-            continue
-        path = urllib.parse.unquote(parsed.path)
-        if path.startswith("/"):
-            require(path.startswith(prefix), "HTML references another site's directory")
-            path = path[len(prefix):]
-        require(safe_path(path) in names, "HTML references a missing static asset")
+    for document in sorted(name for name in names if name.lower().endswith('.html')):
+        parser = StaticHTMLReferences()
+        parser.feed(files[document].decode('utf-8'))
+        for url in parser.urls:
+            parsed = urllib.parse.urlsplit(url)
+            if parsed.scheme or parsed.netloc or not parsed.path:
+                continue
+            absolute = urllib.parse.urljoin(prefix + document, url)
+            path = posixpath.normpath(urllib.parse.unquote(urllib.parse.urlsplit(absolute).path))
+            require(path == prefix.rstrip('/') or path.startswith(prefix), "HTML references another site's directory")
+            relative = path[len(prefix):] if path.startswith(prefix) else ''
+            if not relative or parsed.path.endswith('/'):
+                relative = (relative + '/' if relative else '') + 'index.html'
+            require(safe_path(relative) in names, "HTML references a missing static asset")
     canonical = json.dumps(sorted(entries, key=lambda entry: entry["path"]), sort_keys=True, separators=(",", ":")).encode()
     return metadata, hashlib.sha256(canonical).hexdigest()
+
+
+class StaticHTMLReferences(HTMLParser):
+    """Read real HTML attributes without treating inline JavaScript as markup."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.urls = []
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        require(tag != 'base' or not attrs.get('href'), "HTML base overrides are not supported")
+        for attribute in ('src', 'href', 'poster', 'xlink:href'):
+            if attrs.get(attribute):
+                self.urls.append(attrs[attribute])
+
+    handle_startendtag = handle_starttag
 
 
 def unpack_archive(data):

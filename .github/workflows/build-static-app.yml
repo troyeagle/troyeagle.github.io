@@ -54,7 +54,18 @@ jobs:
           if [[ "$(yarn --version 2>/dev/null || true)" != '1.22.22' ]]; then
             npm install --global yarn@1.22.22 --no-audit --no-fund
           fi
+      - name: Set up Python for standalone HTML projects
+        if: steps.profile.outputs.manager == 'python'
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Set up Node for the static packager
+        if: steps.profile.outputs.manager == 'python'
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        if: steps.profile.outputs.manager != 'python'
         with:
           node-version: '22'
           cache: ${{ steps.profile.outputs.manager }}
