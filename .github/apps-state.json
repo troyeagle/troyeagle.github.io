@@ -1,4 +1,65 @@
 {
-  "apps": {},
+  "apps": {
+    "ai-video-reverse": {
+      "app": "ai-video-reverse",
+      "artifactId": 14913361906,
+      "digest": "6b54797660e6c5de96ee6d033cd66e6d41fe926b17790f0f16f1a421dc94ffc3",
+      "repository": "troyeagle/ai-video-reverse",
+      "runAttempt": 1,
+      "runId": "45380764906",
+      "runNumber": 2,
+      "schema": 1,
+      "sha": "f22cbd8536b2768b80066a310fb071a31a7d53b0",
+      "workflowId": 428800998
+    },
+    "clue": {
+      "app": "clue",
+      "artifactId": 14913816019,
+      "digest": "0b822fb11d36177b62ed0d66367533988aa0f6627e983dceda3ff6ecf7d074f4",
+      "repository": "troyeagle/larp-clues-presentation",
+      "runAttempt": 1,
+      "runId": "45380696340",
+      "runNumber": 3,
+      "schema": 1,
+      "sha": "2033d779ea47a7b3d63a027ee569c335c4cfef0b",
+      "workflowId": 427382082
+    },
+    "clue-viewer": {
+      "app": "clue-viewer",
+      "artifactId": 14912908777,
+      "digest": "5ce3aa53dbb160cfab3c470f200ba36ee7975f79741d33299f03ddfe3ff9bef8",
+      "repository": "troyeagle/clue-viewer",
+      "runAttempt": 1,
+      "runId": "45380697159",
+      "runNumber": 4,
+      "schema": 1,
+      "sha": "fadfa7e3b63a4949faeb222d64092c96f1105602",
+      "workflowId": 428581147
+    },
+    "countdown": {
+      "app": "countdown",
+      "artifactId": 14912693945,
+      "digest": "332155730657006a3756133f663598e5c83606d57dd682ab02329188d11e6fb4",
+      "repository": "troyeagle/larp-countdown",
+      "runAttempt": 1,
+      "runId": "45380697562",
+      "runNumber": 4,
+      "schema": 1,
+      "sha": "ebb39444a05991bedf14cd1e96676fa763ce6d93",
+      "workflowId": 428579774
+    },
+    "merger": {
+      "app": "merger",
+      "artifactId": 14913980756,
+      "digest": "0eb04e66e191f318263ce47d664899674ef11ef7508e8654c965514e8f62a3f6",
+      "repository": "troyeagle/image-merger-fe",
+      "runAttempt": 1,
+      "runId": "45380734014",
+      "runNumber": 3,
+      "schema": 1,
+      "sha": "bd808231debd18f11ab8fa48637fb9770a604ceb",
+      "workflowId": 428581230
+    }
+  },
   "schema": 1
 }
