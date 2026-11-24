@@ -2,24 +2,24 @@
   "schema": 1,
   "apps": {
     "clue": {
-      "enabled": true,
+      "enabled": false,
       "repository": "troyeagle/larp-clues-presentation",
       "branch": "main",
-      "workflow": "publish-static.yml",
-      "buildJob": "Build static application",
+      "workflow": "publish-to-blog.yml",
+      "buildJob": "Publish static application / Build static application",
       "artifact": "site-clue",
       "destination": "clue",
-      "allowSourceMaps": true
+      "allowSourceMaps": false
     },
     "countdown": {
-      "enabled": true,
+      "enabled": false,
       "repository": "troyeagle/larp-countdown",
       "branch": "main",
-      "workflow": "publish-static.yml",
+      "workflow": "publish-to-blog.yml",
       "buildJob": "Publish static application / Build static application",
       "artifact": "site-countdown",
       "destination": "countdown",
-      "allowSourceMaps": true
+      "allowSourceMaps": false
     },
     "clue-viewer": {
       "enabled": true,
@@ -32,10 +32,10 @@
       "allowSourceMaps": false
     },
     "ai-video-reverse": {
-      "enabled": true,
+      "enabled": false,
       "repository": "troyeagle/ai-video-reverse",
       "branch": "main",
-      "workflow": "publish-static.yml",
+      "workflow": "publish-to-blog.yml",
       "buildJob": "Publish static application / Build static application",
       "artifact": "site-ai-video-reverse",
       "destination": "ai-video-reverse",
@@ -49,6 +49,16 @@
       "buildJob": "Publish static application / Build static application",
       "artifact": "site-merger",
       "destination": "merger",
+      "allowSourceMaps": false
+    },
+    "expedition-alfonso-showcase": {
+      "enabled": false,
+      "repository": "troyeagle/expedition-alfonso-showcase",
+      "branch": "main",
+      "workflow": "publish-to-blog.yml",
+      "buildJob": "Publish static application / Build static application",
+      "artifact": "site-expedition-alfonso-showcase",
+      "destination": "expedition-alfonso-showcase",
       "allowSourceMaps": false
     }
   }

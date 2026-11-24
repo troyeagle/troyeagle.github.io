@@ -37,7 +37,14 @@ jobs:
           persist-credentials: false
       - id: repositories
         name: Read the trusted source allowlist
-        run: echo "names=$(python3 .github/scripts/sync_apps.py repositories)" >> "$GITHUB_OUTPUT"
+        env:
+          INCLUDE_DISABLED: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && inputs.include_disabled }}
+        run: |
+          preview_flags=()
+          if [[ "$INCLUDE_DISABLED" == 'true' ]]; then
+            preview_flags+=(--include-disabled)
+          fi
+          echo "names=$(python3 .github/scripts/sync_apps.py repositories "${preview_flags[@]}")" >> "$GITHUB_OUTPUT"
       - id: reader
         name: Create a source-read token
         if: vars.SITE_SYNC_APP_ID != ''

@@ -109,9 +109,12 @@ class PublisherProtocolTests(unittest.TestCase):
                             'sha': env['GITHUB_SHA'], 'runId': '21', 'runNumber': 3, 'runAttempt': 1}
                 receiver.validate_files(files, expected, {'destination': app, 'allowSourceMaps': False})
 
-    def test_independent_project_site_cannot_use_the_blog_packager(self):
+    def test_independent_project_retains_a_source_map_free_blog_fallback(self):
         env = {**self.env, 'GITHUB_REPOSITORY': 'troyeagle/expedition-alfonso-showcase',
                'GITHUB_REF': 'refs/heads/main', 'GITHUB_OUTPUT': str(self.root / 'outputs')}
         result = self.run_publisher('profile', 'expedition-alfonso-showcase', env)
-        self.assertNotEqual(result.returncode, 0)
-        self.assertFalse((self.root / 'outputs').exists())
+        self.assertEqual(result.returncode, 0, result.stderr)
+        values = dict(line.split('=', 1) for line in (self.root / 'outputs').read_text().splitlines())
+        self.assertEqual(values['manager'], 'python')
+        self.assertEqual(values['source_maps'], 'false')
+        self.assertEqual(values['public_url'], '/expedition-alfonso-showcase')

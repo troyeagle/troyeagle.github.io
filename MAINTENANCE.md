@@ -12,71 +12,62 @@ Co-authored-by: Bot <bot@anonymous.com>
 
 这些维护规则文件在 Jekyll 构建中排除，作为 Git 仓库操作规约维护。
 
-## 独立应用自动同步
+## 发布方式与迁移记录
 
-各应用共用博客端接收流程，使用 fine-grained PAT 认证。接入是否启用，以 [应用白名单](.github/apps.json) 中的 `enabled` 为准；新应用先暂停，完成预览后再启用。
+公开源码项目由各自仓库独立部署项目 Pages；私有源码继续使用博客的验证、收集和发布流程。四个公开项目均保留默认停用的博客回退工作流，未来转为私有时按源码规约切换。
 
-| 源码仓库 | 发布分支 | 锁定安装方式 / 输出 | 线上入口 | 构建工作流 | 通知 Secret 配置 |
-| --- | --- | --- | --- | --- | --- |
-| [larp-clues-presentation](https://github.com/troyeagle/larp-clues-presentation) | `main` | npm / `build/` | [/clue/](https://troyeagle.github.io/clue/) | [构建](https://github.com/troyeagle/larp-clues-presentation/actions/workflows/publish-static.yml) | [Secrets](https://github.com/troyeagle/larp-clues-presentation/settings/secrets/actions) |
-| [larp-countdown](https://github.com/troyeagle/larp-countdown) | `main` | Yarn Classic / `build/` | [/countdown/](https://troyeagle.github.io/countdown/) | [构建](https://github.com/troyeagle/larp-countdown/actions/workflows/publish-static.yml) | [Secrets](https://github.com/troyeagle/larp-countdown/settings/secrets/actions) |
-| [clue-viewer](https://github.com/troyeagle/clue-viewer) | `master` | pnpm / `dist/` | [/clue-viewer/](https://troyeagle.github.io/clue-viewer/) | [构建](https://github.com/troyeagle/clue-viewer/actions/workflows/publish-static.yml) | [Secrets](https://github.com/troyeagle/clue-viewer/settings/secrets/actions) |
-| [image-merger-fe](https://github.com/troyeagle/image-merger-fe) | `main` | npm / `dist/` | [/merger/](https://troyeagle.github.io/merger/) | [构建](https://github.com/troyeagle/image-merger-fe/actions/workflows/publish-static.yml) | [Secrets](https://github.com/troyeagle/image-merger-fe/settings/secrets/actions) |
-| [ai-video-reverse](https://github.com/troyeagle/ai-video-reverse) | `main` | Python 标准库 / `dist/` | [/ai-video-reverse/](https://troyeagle.github.io/ai-video-reverse/) | [构建](https://github.com/troyeagle/ai-video-reverse/actions/workflows/publish-static.yml) | [Secrets](https://github.com/troyeagle/ai-video-reverse/settings/secrets/actions) |
+### 公开项目站
 
-除原 `clue` 工作流外，各源码项目调用 [共享构建工作流](.github/workflows/build-static-app.yml)，固定调用版本的完整提交 SHA，并让 `publisher_ref` 指向同一版本。共享工作流使用 Node 22 和同一份 [产物打包器](.github/scripts/package-static.mjs)；前端项目沿用各自锁文件，独立 HTML 项目使用 Python 3.12 标准库，无需安装应用依赖。独立 HTML 项目的产物也拒绝 source map。
+| 源码仓库 | 项目站 | 博客原目录说明 | 源码发布规约 |
+| --- | --- | --- | --- |
+| [larp-clues-presentation](https://github.com/troyeagle/larp-clues-presentation) | [/larp-clues-presentation/](https://troyeagle.github.io/larp-clues-presentation/) | [clue/remark.md](clue/remark.md) | [规约](https://github.com/troyeagle/larp-clues-presentation/blob/main/.github/STATIC_PUBLISH.md) |
+| [larp-countdown](https://github.com/troyeagle/larp-countdown) | [/larp-countdown/](https://troyeagle.github.io/larp-countdown/) | [countdown/remark.md](countdown/remark.md) | [规约](https://github.com/troyeagle/larp-countdown/blob/main/.github/STATIC_PUBLISH.md) |
+| [ai-video-reverse](https://github.com/troyeagle/ai-video-reverse) | [/ai-video-reverse/](https://troyeagle.github.io/ai-video-reverse/) | [ai-video-reverse/remark.md](ai-video-reverse/remark.md) | [规约](https://github.com/troyeagle/ai-video-reverse/blob/main/.github/STATIC_PUBLISH.md) |
+| [expedition-alfonso-showcase](https://github.com/troyeagle/expedition-alfonso-showcase) | [/expedition-alfonso-showcase/](https://troyeagle.github.io/expedition-alfonso-showcase/) | [expedition-alfonso-showcase/remark.md](expedition-alfonso-showcase/remark.md) | [规约](https://github.com/troyeagle/expedition-alfonso-showcase/blob/main/.github/STATIC_PUBLISH.md) |
 
-源码的表中发布分支构建成功后，博客端同步工作流校验并复制新产物，直接提交到本仓库 `master`，再由 GitHub Pages 发布；产物更新不会逐次创建 PR。配置通知 Secret 后，源码构建会立即请求同步；未配置时仍约每 30 分钟定时检查，GitHub 调度可能延迟。同一构建不会重复提交。普通博客发布会部署仓库里已有的应用文件，不会重新构建源码项目。
+默认推送源码 `main` 即独立检查、构建并部署，使用 GITHUB_TOKEN 与 OIDC。每个源码仓库的 Pages Source 选择 GitHub Actions。`SITE_PUBLISH_MODE` 未设置或为 `pages` 时，仅公开仓库的项目站工作流执行；设为 `blog` 时，项目站工作流跳过，保留的 `publish-to-blog.yml` 才会执行。
 
-### 独立 HTML 项目的发布边界
+`clue/` 与 `countdown/` 的旧博客地址不再托管应用，新的项目地址使用完整仓库名。视频与空间对齐工具的项目路径与原地址一致。博客旧目录只保留 `remark.md`，写明原用途、源码仓库和新入口。`tragedy/` 尚未映射到公开源码仓库，保持既有内容。
 
-- `ai-video-reverse`：源码 `.github/static-pages.json` 明确登记允许公开的案例；`scripts/build_static_pages.py` 重建并验证案例，导出目录首页及 `<案例ID>/index.html`。当前案例地址为 [/ai-video-reverse/BV1MssN6ZE1v/](https://troyeagle.github.io/ai-video-reverse/BV1MssN6ZE1v/)。线上页面保留完整讲稿、翻页和自动演示，原声音频仅在本地提供，可从页面中的原视频链接收听。参考帧、验证截图、文章原稿、ASR 输出、媒体、模型和可编辑模板不进入产物。
-- 视频源码仓库在 `.github/STATIC_PUBLISH.md` 记录本地重建、发布分支、工作流入口、通知配置和恢复方法。新增视频案例必须先登记，再随 `main` 提交；不会自动收集仓库中的任意 HTML 文件。
+### 当前由博客托管的私有源码
 
-### 独立项目站
+| 源码仓库 | 发布分支 | 安装 / 输出 | 博客入口 | 工作流 |
+| --- | --- | --- | --- | --- |
+| [clue-viewer](https://github.com/troyeagle/clue-viewer) | `master` | pnpm / `dist/` | [/clue-viewer/](https://troyeagle.github.io/clue-viewer/) | [构建](https://github.com/troyeagle/clue-viewer/actions/workflows/publish-static.yml) |
+| [image-merger-fe](https://github.com/troyeagle/image-merger-fe) | `main` | npm / `dist/` | [/merger/](https://troyeagle.github.io/merger/) | [构建](https://github.com/troyeagle/image-merger-fe/actions/workflows/publish-static.yml) |
 
-[expedition-alfonso-showcase](https://github.com/troyeagle/expedition-alfonso-showcase) 是公开仓库，由自身 GitHub Actions 直接构建并部署 [项目 Pages](https://troyeagle.github.io/expedition-alfonso-showcase/)。发布来源在 [该仓库 Pages 设置](https://github.com/troyeagle/expedition-alfonso-showcase/settings/pages) 选择 GitHub Actions；详细规约见 [源码发布说明](https://github.com/troyeagle/expedition-alfonso-showcase/blob/main/.github/STATIC_PUBLISH.md)。
+博客同步默认只读取启用的槽位，目前是上述两个私有源码。来源、成功构建、分支历史、文件哈希、路径和所有 HTML 引用均经校验后，才更新对应目录和 `.github/apps-state.json`；普通产物更新直接提交 `master` 再触发 Pages，不创建逐次审核 PR。每小时 17、47 分定时检查，GitHub 调度可能延迟。
 
-此项目的产物、发布状态和收集配置已迁出博客；原访问路径保持不变。`SOURCE_ARTIFACTS_TOKEN` 的推荐授权范围是上表五个仓库，可取消对该独立项目的读取授权，通常无需更换 Token 值。
+### 保留的私有化回退配置
 
-### 配置与运行入口
+`.github/apps.json` 保留六个可信目的目录：两个私有项目 `enabled: true`；四个公开项目回退槽位 `enabled: false`，其来源工作流为 `publish-to-blog.yml`。`source_repositories` 默认只为启用项申请读取权限；明确的接入预览才包括停用项。
+
+从公开项目迁回博客时按以下顺序：
+
+1. 审核允许公开的构建输出。源码私有不等于输出私有，博客 Pages 仍公开；不得发布密钥、内部原文、原始媒体、可编辑模板或 source map。视频只导出 `.github/static-pages.json` 登记的批准案例 HTML。
+2. 在源码仓库将 `SITE_PUBLISH_MODE` 设为 `blog`，停用/下线该项目站；给博客 `SOURCE_ARTIFACTS_TOKEN` 增加该源码仓库的 Contents: read、Actions: read，再按要求转换源码可见性。
+3. 手动运行源码 `publish-to-blog.yml`，选择其发布分支，等待成功。所有回退档案关闭 source map；打包器仍附带 `_site-sync.json` 供验证，但元数据不复制到网站。
+4. 博客先保持该槽位 `enabled: false`，在 [同步工作流](https://github.com/troyeagle/troyeagle.github.io/actions/workflows/sync-apps.yml) 勾选 `dry_run` 与 `include_disabled` 预览。通过审核后启用此槽位，取消 `dry_run` 正式同步，审核后的产物将替换该目录的迁移说明。
+5. 验证当时的博客路径与发布状态。线索和倒计时回退时分别使用 `/clue/`、`/countdown/`，与默认项目站路径不同；源码共享构建器会显式使用旧博客 PUBLIC_URL。
+
+返回公开项目站时，先停用博客槽位，再恢复源码公开可见性、把模式设为 `pages` 或删除变量、启用本仓库 Pages 的 GitHub Actions 来源并部署；核对成功后恢复博客 `remark.md`。保留源码回退 workflow 与规约，不删除历史配置。
+
+### 配置入口与最小权限
 
 | 入口 | 用途 |
 | --- | --- |
-| [创建 fine-grained PAT](https://github.com/settings/personal-access-tokens/new) | 创建限定仓库、权限和有效期的令牌 |
-| [管理已有 PAT](https://github.com/settings/personal-access-tokens) | 查看有效期、更新或撤销令牌 |
-| [博客仓库 Actions Secrets](https://github.com/troyeagle/troyeagle.github.io/settings/secrets/actions) | 配置读取产物和提交博客的 PAT |
-| [博客仓库 Actions Variables](https://github.com/troyeagle/troyeagle.github.io/settings/variables/actions) | 查看和修改同步、发布开关 |
-| [编辑收集开关 `SITE_SYNC_ENABLED`](https://github.com/troyeagle/troyeagle.github.io/settings/variables/actions/SITE_SYNC_ENABLED) | `true` 允许收集、校验；`false` 暂停整个同步流程 |
-| [编辑发布开关 `SITE_SYNC_PUBLISH_ENABLED`](https://github.com/troyeagle/troyeagle.github.io/settings/variables/actions/SITE_SYNC_PUBLISH_ENABLED) | `true` 允许自动提交；`false` 只保留收集、校验和预览 |
-| [源码构建工作流](https://github.com/troyeagle/larp-clues-presentation/actions/workflows/publish-static.yml) | 查看构建、下载 `site-clue` 产物，或在 `main` 手动生成新构建 |
-| [博客同步工作流](https://github.com/troyeagle/troyeagle.github.io/actions/workflows/sync-apps.yml) | 手动预览或发布，查看同步记录和 `prepared-static-updates` 产物 |
-| [源码仓库 Actions Secrets](https://github.com/troyeagle/larp-clues-presentation/settings/secrets/actions) | 可选：配置即时通知所需的 `BLOG_DISPATCH_TOKEN` |
-| [源码仓库分支保护](https://github.com/troyeagle/larp-clues-presentation/settings/branches) | 如需人工审核，在源码合入 `main` 前设置 PR 和检查要求 |
-| [GitHub Pages 设置](https://github.com/troyeagle/troyeagle.github.io/settings/pages) | 查看网站发布来源和部署状态 |
-| [博客 Actions 运行记录](https://github.com/troyeagle/troyeagle.github.io/actions) | 排查同步、检查和 Pages 构建部署结果 |
+| [博客 Actions Secrets](https://github.com/troyeagle/troyeagle.github.io/settings/secrets/actions) | 保存读取及写入 Token |
+| [博客 Actions Variables](https://github.com/troyeagle/troyeagle.github.io/settings/variables/actions) | `SITE_SYNC_ENABLED`、`SITE_SYNC_PUBLISH_ENABLED` 均为 `true` 才真实同步 |
+| [博客同步工作流](https://github.com/troyeagle/troyeagle.github.io/actions/workflows/sync-apps.yml) | 预览、手动发布、查看记录 |
+| [源码白名单](.github/apps.json) | 每项目启停与回退槽位 |
+| [已发布状态](.github/apps-state.json) | 活跃博客产物的来源版本与运行身份 |
+| [PAT 管理](https://github.com/settings/personal-access-tokens) | 更新、续期或收缩授权 |
+| [博客 Pages 设置](https://github.com/troyeagle/troyeagle.github.io/settings/pages) | 博客自己的构建来源与状态 |
 
-### 凭据配置
+- `SOURCE_ARTIFACTS_TOKEN` 只保存在博客；正常同步推荐授权 `clue-viewer` 与 `image-merger-fe`，Contents: read、Actions: read。使用某个公开项目回退时再扩展对应源码权限。
+- `BLOG_PUBLISH_TOKEN` 只保存在博客，仅授权博客 Contents: read/write；不分发到源码项目。
+- 回退模式需要即时通知时，可在对应源码保存单独的 `BLOG_DISPATCH_TOKEN`，仅授权博客 Actions: write。它是可选项，不配置也能定时同步。个人仓库 Secret 需要各自保存，即使复用同一 Token。
 
-以下两个 Secret **都保存在博客仓库**，表中的仓库范围是 PAT 的授权范围：
+暂停单个博客项目使用 `enabled: false`；暂停全局发布使用 `SITE_SYNC_PUBLISH_ENABLED=false`，暂停收集使用 `SITE_SYNC_ENABLED=false`。回退旧内容前先暂停相应发布渠道，优先以新源码提交恢复，避免定时任务覆盖回退。
 
-| Secret 名称 | PAT 授权仓库 | 最小权限 |
-| --- | --- | --- |
-| `SOURCE_ARTIFACTS_TOKEN` | 上表五个源码仓库，仅选择这五个 | Contents: read；Actions: read |
-| `BLOG_PUBLISH_TOKEN` | `troyeagle/troyeagle.github.io` | Contents: read/write |
-
-读取 PAT 可以复用：编辑原 PAT，将仓库授权增加到上表五个源码仓库，保持只读权限。仅修改授权通常不需要更换 Secret；如重新生成了令牌，则覆盖博客中的 `SOURCE_ARTIFACTS_TOKEN`。`BLOG_PUBLISH_TOKEN` 仍只授权博客仓库，无需分发到源码仓库。
-
-即时通知也是可选配置：一个仅授权 **博客仓库 Actions: write** 的 PAT 可以在五个源码仓库中复用，分别保存为各仓库的 `BLOG_DISPATCH_TOKEN`。个人账户的 repository Secret 相互独立，因此同一个值需要分别配置；不使用 `BLOG_PUBLISH_TOKEN` 代替通知令牌。未配置通知时，博客端仍通过定时检查和手动运行同步。令牌值只保存在 Actions Secrets 中，不写入仓库文件。
-
-### 常用操作
-
-- **只做预览**：在博客同步工作流中选择 `master`，保持 `dry_run` 勾选（默认值为 `true`）。
-- **预览新接入且暂停中的应用**：同时勾选 `dry_run` 与 `include_disabled`。这会校验并准备暂停应用的产物，发布任务仍不会执行。
-- **执行真实同步**：两个仓库变量均设为 `true`，在工作流表单中取消勾选 `dry_run`。
-- **暂停发布但保留预览**：将 `SITE_SYNC_PUBLISH_ENABLED` 设为 `false`。
-- **暂停单个应用**：在 [应用白名单](.github/apps.json) 中将该应用的 `enabled` 设为 `false`。
-- **查询已发布源码版本**：查看 [发布状态记录](.github/apps-state.json)。
-- **回退应用版本**：先暂停该应用同步，再回退相应发布提交，避免定时任务再次覆盖回退结果。
-
-修改 GitHub 设置时可能需要本人完成 sudo 身份确认。更完整的凭据、校验范围和恢复说明见 [自动同步操作文档](.github/STATIC_APP_SYNC.md)。
+更完整的校验、并发保护与恢复设计见 [STATIC_APP_SYNC.md](.github/STATIC_APP_SYNC.md)。GitHub 设置可能需要本人完成 sudo 身份确认。规则和维护文档保持在 Git 仓库中，不加入 Hux 导航。

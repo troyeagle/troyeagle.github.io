@@ -115,13 +115,33 @@ class StaticSyncTests(unittest.TestCase):
     def write_config(self):
         (self.root / ".github/apps.json").write_text(json.dumps(self.config))
 
-    def test_independent_project_site_is_outside_the_blog_allowlist(self):
+    def test_independent_project_retains_only_a_paused_fallback(self):
         self.config['apps']['expedition-alfonso-showcase'] = {
             **APP, 'repository': 'troyeagle/expedition-alfonso-showcase',
-            'destination': 'expedition-alfonso-showcase'}
+            'destination': 'expedition-alfonso-showcase', 'enabled': False}
         self.write_config()
-        with self.assertRaisesRegex(ValueError, 'outside the app allowlist'):
-            sync.load_config(self.root)
+        self.assertFalse(sync.load_config(self.root)['expedition-alfonso-showcase']['enabled'])
+        self.assertEqual(len(self.prepare()), 1)
+
+    def test_default_read_token_scope_omits_paused_public_projects(self):
+        self.config['apps']['expedition-alfonso-showcase'] = {
+            **APP, 'repository': 'troyeagle/expedition-alfonso-showcase',
+            'destination': 'expedition-alfonso-showcase', 'enabled': False}
+        self.write_config()
+        self.assertEqual(sync.source_repositories(self.root), ['larp-clues-presentation'])
+        self.assertEqual(sync.source_repositories(self.root, True), ['expedition-alfonso-showcase', 'larp-clues-presentation'])
+
+    def test_paused_public_fallback_does_not_overwrite_migration_remark(self):
+        self.config['apps']['expedition-alfonso-showcase'] = {
+            **APP, 'repository': 'troyeagle/expedition-alfonso-showcase',
+            'destination': 'expedition-alfonso-showcase', 'enabled': False}
+        self.write_config()
+        target=self.root/'expedition-alfonso-showcase';target.mkdir()
+        (target/'remark.md').write_text('Moved to project Pages')
+        self.prepared.mkdir()
+        (self.prepared/'plan.json').write_text(json.dumps({'schema':1,'updates':[{'app':'expedition-alfonso-showcase'}]}))
+        self.assertEqual(sync.apply_updates(self.root,self.prepared),[])
+        self.assertEqual((target/'remark.md').read_text(),'Moved to project Pages')
 
     def test_old_prepared_project_update_cannot_overwrite_retired_directory(self):
         target = self.root / 'expedition-alfonso-showcase'

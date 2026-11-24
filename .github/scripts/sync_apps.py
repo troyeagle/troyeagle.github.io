@@ -20,7 +20,7 @@ import urllib.request
 import zipfile
 from html.parser import HTMLParser
 
-DESTINATIONS = {"clue", "countdown", "clue-viewer", "merger", "ai-video-reverse"}
+DESTINATIONS = {"clue", "countdown", "clue-viewer", "merger", "ai-video-reverse", "expedition-alfonso-showcase"}
 MANIFEST = "_site-sync.json"
 STATE_PATH = ".github/apps-state.json"
 MAX_BYTES = 256 * 1024 * 1024
@@ -52,6 +52,12 @@ def load_state(root):
     state = json.loads(path.read_text()) if path.exists() else {"schema": 1, "apps": {}}
     require(state.get("schema") == 1 and isinstance(state.get("apps"), dict), "Invalid published state")
     return state
+
+
+def source_repositories(root, include_disabled=False):
+    """Request read access only for active sources, unless onboarding is explicit."""
+    return sorted({app['repository'].split('/', 1)[1] for app in load_config(root).values()
+                   if app.get('enabled', True) or include_disabled})
 
 
 def safe_path(path, directory=False):
@@ -330,7 +336,7 @@ def main():
     parser.add_argument("--include-disabled", action="store_true", help="Collect paused applications for onboarding previews")
     args = parser.parse_args()
     if args.command == "repositories":
-        print(",".join(sorted({app["repository"].split("/", 1)[1] for app in load_config(args.root).values()})))
+        print(",".join(source_repositories(args.root, args.include_disabled)))
     elif args.command == "prepare":
         require(args.prepared is not None, "Specify --prepared")
         updates = collect(args.root, args.prepared, GitHub(os.environ.get("SOURCE_TOKEN")), include_disabled=args.include_disabled)

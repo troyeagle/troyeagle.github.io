@@ -5,10 +5,10 @@ import { resolve, join } from 'node:path';
 
 const profiles = {
   clue: { repository: 'troyeagle/larp-clues-presentation', branch: 'main', manager: 'npm',
-    lockfile: 'package-lock.json', output: 'build', publicUrl: '/clue', maps: true,
+    lockfile: 'package-lock.json', output: 'build', publicUrl: '/clue', maps: false,
     install: 'npm ci --no-audit --no-fund', test: 'npm test -- --watchAll=false --runInBand', build: 'npm run build' },
   countdown: { repository: 'troyeagle/larp-countdown', branch: 'main', manager: 'yarn',
-    lockfile: 'yarn.lock', output: 'build', publicUrl: '/countdown', maps: true,
+    lockfile: 'yarn.lock', output: 'build', publicUrl: '/countdown', maps: false,
     install: 'yarn install --frozen-lockfile --non-interactive', test: 'yarn test --watchAll=false --runInBand', build: 'yarn build' },
   'clue-viewer': { repository: 'troyeagle/clue-viewer', branch: 'master', manager: 'pnpm',
     lockfile: 'pnpm-lock.yaml', output: 'dist', publicUrl: '/clue-viewer', maps: false,
@@ -18,6 +18,9 @@ const profiles = {
     install: 'npm ci --no-audit --no-fund', test: 'npm run test:unit -- --run', build: 'npm run build' },
   'ai-video-reverse': { repository: 'troyeagle/ai-video-reverse', branch: 'main', manager: 'python',
     lockfile: '', output: 'dist', publicUrl: '/ai-video-reverse', maps: false,
+    install: 'true', test: 'python3 -m unittest discover -s tests -v', build: 'python3 scripts/build_static_pages.py' },
+  'expedition-alfonso-showcase': { repository: 'troyeagle/expedition-alfonso-showcase', branch: 'main', manager: 'python',
+    lockfile: '', output: 'dist', publicUrl: '/expedition-alfonso-showcase', maps: false,
     install: 'true', test: 'python3 -m unittest discover -s tests -v', build: 'python3 scripts/build_static_pages.py' },
 };
 
