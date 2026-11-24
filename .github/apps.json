@@ -12,7 +12,7 @@
       "allowSourceMaps": true
     },
     "countdown": {
-      "enabled": false,
+      "enabled": true,
       "repository": "troyeagle/larp-countdown",
       "branch": "main",
       "workflow": "publish-static.yml",
@@ -22,7 +22,7 @@
       "allowSourceMaps": true
     },
     "clue-viewer": {
-      "enabled": false,
+      "enabled": true,
       "repository": "troyeagle/clue-viewer",
       "branch": "master",
       "workflow": "publish-static.yml",
@@ -32,7 +32,7 @@
       "allowSourceMaps": false
     },
     "merger": {
-      "enabled": false,
+      "enabled": true,
       "repository": "troyeagle/image-merger-fe",
       "branch": "main",
       "workflow": "publish-static.yml",
