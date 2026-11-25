@@ -45,3 +45,7 @@ git var GIT_COMMITTER_IDENT
 ```
 
 公开资料中的本机账户绝对路径统一写作 `/Users/{youraccountname}/...`。这是说明占位符；执行命令时应替换为本机账户，或使用相对路径重新生成素材清单。不得把真实本机账户路径再次提交到公开仓库。
+
+## 博客本地提交检查
+
+本仓库在当前检出安装本地提交检查；新克隆或移动目录后执行 `python3 .githooks/install.py install`，用 `python3 .githooks/install.py status` 核对。检查实际暂存内容、作者/提交者和提交信息，不自动修改数据。触发拦截时修正问题后重新提交，不用 `--no-verify` 绕过。规则和停用方式见 [.githooks/README.md](.githooks/README.md)。仅加载博客仓库，不修改其他工程、GitHub CI 或发布配置。
