@@ -1,29 +1,4 @@
 {
-  "apps": {
-    "clue-viewer": {
-      "app": "clue-viewer",
-      "artifactId": 14912908777,
-      "digest": "5ce3aa53dbb160cfab3c470f200ba36ee7975f79741d33299f03ddfe3ff9bef8",
-      "repository": "troyeagle/clue-viewer",
-      "runAttempt": 1,
-      "runId": "45380697159",
-      "runNumber": 4,
-      "schema": 1,
-      "sha": "fadfa7e3b63a4949faeb222d64092c96f1105602",
-      "workflowId": 428581147
-    },
-    "merger": {
-      "app": "merger",
-      "artifactId": 14913980756,
-      "digest": "0eb04e66e191f318263ce47d664899674ef11ef7508e8654c965514e8f62a3f6",
-      "repository": "troyeagle/image-merger-fe",
-      "runAttempt": 1,
-      "runId": "45380734014",
-      "runNumber": 3,
-      "schema": 1,
-      "sha": "bd808231debd18f11ab8fa48637fb9770a604ceb",
-      "workflowId": 428581230
-    }
-  },
+  "apps": {},
   "schema": 1
 }

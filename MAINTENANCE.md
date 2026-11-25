@@ -71,3 +71,9 @@ Co-authored-by: Bot <bot@anonymous.com>
 暂停单个博客项目使用 `enabled: false`；暂停全局发布使用 `SITE_SYNC_PUBLISH_ENABLED=false`，暂停收集使用 `SITE_SYNC_ENABLED=false`。回退旧内容前先暂停相应发布渠道，优先以新源码提交恢复，避免定时任务覆盖回退。
 
 更完整的校验、并发保护与恢复设计见 [STATIC_APP_SYNC.md](.github/STATIC_APP_SYNC.md)。GitHub 设置可能需要本人完成 sudo 身份确认。规则和维护文档保持在 Git 仓库中，不加入 Hux 导航。
+
+## 提交身份与历史维护
+
+人类作者和提交者使用 `troyeagle <troyeagle@qq.com>`，AI 协作者使用 `Bot <bot@anonymous.com>`。仅设置七个项目各自的本地 Git 身份，不改全局配置。
+
+历史身份或公开路径改写前，备份旧分支并暂停两个同步开关；强制更新使用明确旧 SHA 的 `--force-with-lease`。固定共享工作流 SHA 和 `publisher_ref` 随历史映射更新。历史 Actions 运行不可改写，故清空当前 apps-state 后由新源码构建重建来源证明；现有网站文件保持至验证后同步。验证新构建与发布成功后恢复暂停前的开关值。

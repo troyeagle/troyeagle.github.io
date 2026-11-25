@@ -30,3 +30,18 @@ Co-authored-by: Bot <bot@anonymous.com>
 5. 已发布历史的改写必须在用户明确授权的范围内进行。需要强制更新时，备份旧历史并使用带明确旧 SHA 的 `--force-with-lease`，不得覆盖检查期间新增的提交。改写后同步修正受影响的固定 SHA 引用和发布状态，验证自动化仍可用。
 
 维护入口及静态应用发布流程见 [MAINTENANCE.md](MAINTENANCE.md)。
+
+## 用户提交身份与公开路径
+
+用户指定的人类作者和提交者统一为 `troyeagle <troyeagle@qq.com>`；AI 协作者统一为 `Co-authored-by: Bot <bot@anonymous.com>`，只保留一条。第三方作者及 GitHub 自动提交身份按其实际归属保留。
+
+仅在本仓库设置 Git 身份，不修改全局配置：
+
+```sh
+git config --local user.name troyeagle
+git config --local user.email troyeagle@qq.com
+git var GIT_AUTHOR_IDENT
+git var GIT_COMMITTER_IDENT
+```
+
+公开资料中的本机账户绝对路径统一写作 `/Users/{youraccountname}/...`。这是说明占位符；执行命令时应替换为本机账户，或使用相对路径重新生成素材清单。不得把真实本机账户路径再次提交到公开仓库。
