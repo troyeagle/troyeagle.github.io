@@ -1,4 +1,29 @@
 {
-  "apps": {},
+  "apps": {
+    "clue-viewer": {
+      "app": "clue-viewer",
+      "artifactId": 15000020772,
+      "digest": "5ce3aa53dbb160cfab3c470f200ba36ee7975f79741d33299f03ddfe3ff9bef8",
+      "repository": "troyeagle/clue-viewer",
+      "runAttempt": 1,
+      "runId": "45564766637",
+      "runNumber": 5,
+      "schema": 1,
+      "sha": "06c1b4da7f097b91bb12a42a84745d68005e484c",
+      "workflowId": 428581147
+    },
+    "merger": {
+      "app": "merger",
+      "artifactId": 14998654398,
+      "digest": "0eb04e66e191f318263ce47d664899674ef11ef7508e8654c965514e8f62a3f6",
+      "repository": "troyeagle/image-merger-fe",
+      "runAttempt": 1,
+      "runId": "45564031237",
+      "runNumber": 4,
+      "schema": 1,
+      "sha": "42b431cb513ac6b55642db9b159b11c788fd1361",
+      "workflowId": 428581230
+    }
+  },
   "schema": 1
 }
